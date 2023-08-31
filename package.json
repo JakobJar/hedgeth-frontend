@@ -1,0 +1,20 @@
+{
+  "name": "nuxt-app",
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "devDependencies": {
+    "@nuxt/devtools": "latest",
+    "@sfxcode/nuxt-primevue": "^1.3.5",
+    "nuxt": "^3.7.0"
+  },
+  "dependencies": {
+    "ethers": "^6.7.1",
+    "primevue": "^3.32.2"
+  }
+}
