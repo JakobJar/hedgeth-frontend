@@ -8,5 +8,14 @@ export default defineNuxtConfig({
     'primevue/resources/primevue.css',
     'primevue/resources/themes/viva-dark/theme.css',
     'primeicons/primeicons.css',
-  ]
+  ],
+  runtimeConfig: {
+    infura: {
+      projectId: process.env.INFURA_PROJECT_ID,
+      projectSecret: process.env.INFURA_PROJECT_SECRET,
+    },
+    public: {
+      network: process.env.NETWORK ?? 'sepolia',
+    }
+  }
 })
