@@ -21,8 +21,14 @@
         <div v-if="data && !pending">
           <h1>Assets</h1>
           <DataTable :value="data.assetValues">
-            <Column field="key" header="Address"/>
-            <Column field="value" header="Value"/>
+            <Column field="name" header="Name"/>
+            <Column field="symbol" header="Symbol"/>
+            <Column field="token" header="Token"/>
+            <Column header="Value">
+              <template #body="slotProps">
+                {{slotProps.data.value / (10n ** BigInt(slotProps.data.decimals))}}
+              </template>
+            </Column>
           </DataTable>
         </div>
       </TabPanel>
@@ -30,8 +36,12 @@
         <div v-if="data && !pending">
           <h1>Investors</h1>
           <DataTable :value="data.investments">
-            <Column field="key" header="Address"/>
-            <Column field="value" header="Amount"/>
+            <Column field="investor" header="Address"/>
+            <Column header="Investment">
+              <template #body="slotProps">
+                {{slotProps.data.value / (10n ** 18n)}}
+              </template>
+            </Column>
           </DataTable>
         </div>
       </TabPanel>
@@ -51,17 +61,6 @@ const route = useRoute();
 
 const hash = Array.isArray(route.params.hash) ? route.params.hash[0] : route.params.hash;
 
-const zip = (arr: any[][]) => {
-  const a1 = arr[0];
-  const a2 = arr[1];
-  return a1.map((x, i) => {
-    return {
-      key: x,
-      value: a2[i]
-    }
-  });
-};
-
 const { data, pending } = useAsyncData('load-fund', async () => {
   const ethers = await useEthersProvider();
 
@@ -72,8 +71,8 @@ const { data, pending } = useAsyncData('load-fund', async () => {
   return {
     fundRaisingClose: new Date(Number(await fundContract.fundRaisingClose())),
     fundClose: new Date(Number(await fundContract.fundClose())),
-    investments: zip(await fundContract.getInvestments()),
-    assetValues: zip(await fundContract.getAssetValues()),
+    investments: await fundContract.getInvestments(),
+    assetValues: await fundContract.getAssetValues(),
     owner: await fundContract.owner()
   };
 }, {server: false});
