@@ -45,7 +45,7 @@
 </template>
 
 <script setup lang="ts">
-import {BrowserProvider, Contract} from "ethers";
+import {Contract} from "ethers";
 
 const route = useRoute();
 
@@ -63,7 +63,7 @@ const zip = (arr: any[][]) => {
 };
 
 const { data, pending } = useAsyncData('load-fund', async () => {
-  const ethers = await useEthers();
+  const ethers = await useEthersProvider();
 
   const fundABI: [] = await $fetch('/abi/fund.json');
 
@@ -79,19 +79,17 @@ const { data, pending } = useAsyncData('load-fund', async () => {
 }, {server: false});
 
 const invest = async () => {
-  const ethers = await useEthers();
+  const signer = await useEthersSigner(true);
 
   const fundABI: [] = await $fetch('/abi/fund.json');
   const ierc20ABI: [] = await $fetch('/abi/IERC20.json');
 
-  const fundContract = new Contract(hash, fundABI, ethers.provider);
-  const usdcContract = new Contract('0x6f14C02Fc1F78322cFd7d707aB90f18baD3B54f5', ierc20ABI, ethers.provider);
+  const fundContract = new Contract(hash, fundABI, signer);
+  const usdcContract = new Contract('0x6f14C02Fc1F78322cFd7d707aB90f18baD3B54f5', ierc20ABI, signer);
 
-  if (!(ethers instanceof BrowserProvider))
-    return;
-
-  //await usdcContract.connect(await ethers.getSigner()).approve(hash, 1000000);
-  await fundContract.connect(await ethers.getSigner()).invest(1000000);
+  const usdcTran = await usdcContract.getFunction('approve').send(hash, 10n ** 18n);
+  await usdcTran.wait();
+  await fundContract.getFunction('invest').send(10n ** 18n);
 };
 </script>
 
