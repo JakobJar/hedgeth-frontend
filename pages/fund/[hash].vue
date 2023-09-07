@@ -47,8 +47,15 @@
       </TabPanel>
       <TabPanel header="Manage">
         <h1>Manage</h1>
-        <p>Manage this fund</p>
-        <Button label="Manage"/>
+        <form>
+          <label for="from">From</label>
+          <InputText v-model="from" id="from"/>
+          <label for="to">To</label>
+          <InputText v-model="to" id="to"/>
+          <label for="amount">Amount</label>
+          <InputNumber v-model="amount" id="amount"/>
+          <Button label="Swap" @click="swap" />
+        </form>
       </TabPanel>
     </TabView>
   </NuxtLayout>
@@ -60,6 +67,10 @@ import {Contract} from "ethers";
 const route = useRoute();
 
 const hash = Array.isArray(route.params.hash) ? route.params.hash[0] : route.params.hash;
+
+const from = ref('');
+const to = ref('');
+const amount = ref(0n);
 
 const { data, pending } = useAsyncData('load-fund', async () => {
   const ethers = await useEthersProvider();
@@ -89,6 +100,16 @@ const invest = async () => {
   const usdcTran = await usdcContract.getFunction('approve').send(hash, 10n ** 18n);
   await usdcTran.wait();
   await fundContract.getFunction('invest').send(10n ** 18n);
+};
+
+const swap = async () => {
+  console.log("swap");
+  const signer = await useEthersSigner(true);
+
+  const fundABI: [] = await $fetch('/abi/fund.json');
+
+  const fundContract = new Contract(hash, fundABI, signer);
+  await fundContract.getFunction('swapAssets').send(from.value, to.value, amount.value);
 };
 </script>
 
