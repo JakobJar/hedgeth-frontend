@@ -56,7 +56,8 @@
           <InputNumber v-model="amount" id="amount"/>
           <Button label="Swap" @click="swap" />
         </form>
-        <Button label="Change close" @click="changeCloseDate"/>
+        <Button label="Change close" @click="changeCloseDate('setFundClose')"/>
+        <Button label="Change fund raising close" @click="changeCloseDate('setFundRaisingClose')"/>
       </TabPanel>
     </TabView>
   </NuxtLayout>
@@ -71,9 +72,7 @@ const hash = Array.isArray(route.params.hash) ? route.params.hash[0] : route.par
 
 const from = ref('');
 const to = ref('');
-const amount = ref(0n);
-
-const closeDate = ref(new Date());
+const amount = ref(0);
 
 const { data, pending } = useAsyncData('load-fund', async () => {
   const ethers = await useEthersProvider();
@@ -113,18 +112,17 @@ const swap = async () => {
 
   const fundContract = new Contract(hash, fundABI, signer);
   console.log("swap", from.value, to.value, amount.value);
-  //await fundContract.getFunction('swapAssets').send(from.value, to.value, BigInt(amount.value) * 10n ** 18n);
-  await fundContract.getFunction('backswapAssets').send();
+  await fundContract.getFunction('swapAssets').send(from.value, to.value, BigInt(amount.value) * 10n ** 18n);
 };
 
-const changeCloseDate = async () => {
+const changeCloseDate = async (method: string) => {
   const signer = await useEthersSigner(true);
 
   const fundABI: [] = await $fetch('/abi/fund.json');
 
   const fundContract = new Contract(hash, fundABI, signer);
 
-  await fundContract.getFunction('setFundClose').send(BigInt(new Date().getTime()) / 1000n + 60n * 10n);
+  await fundContract.getFunction(method).send(BigInt(new Date().getTime()) / 1000n + 60n * 10n);
 };
 </script>
 
