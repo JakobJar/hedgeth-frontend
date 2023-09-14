@@ -55,6 +55,7 @@
           <label for="amount">Amount</label>
           <InputNumber v-model="amount" id="amount"/>
           <Button label="Swap" @click="swap" />
+          <Button label="Create pool" @click="createPool" />
         </form>
         <Button label="Change close" @click="changeCloseDate('setFundClose')"/>
         <Button label="Change fund raising close" @click="changeCloseDate('setFundRaisingClose')"/>
