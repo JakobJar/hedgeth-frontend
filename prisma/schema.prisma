@@ -11,7 +11,7 @@ datasource db {
 }
 
 model Fund {
-  hash         Int      @id
+  address     String     @id
   name        String
   description String?
 }

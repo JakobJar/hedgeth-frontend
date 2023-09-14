@@ -4,7 +4,7 @@
       <TabPanel header="General">
         <div v-if="data && !pending">
           <h1>General</h1>
-          <p>Address: <a href="https://sepolia.etherscan.io/address/{{hash}}">{{hash}}</a></p>
+          <p>Address: <a href="https://sepolia.etherscan.io/address/{{address}}">{{ address }}</a></p>
           <dl>
             <dt>Owner:</dt>
             <dd v-if="data && !pending"><a href="https://sepolia.etherscan.io/address/{{data.owner}}">{{data.owner}}</a></dd>
@@ -69,7 +69,7 @@ import {Contract} from "ethers";
 
 const route = useRoute();
 
-const hash = Array.isArray(route.params.hash) ? route.params.hash[0] : route.params.hash;
+const address = Array.isArray(route.params.address) ? route.params.address[0] : route.params.address;
 
 const from = ref('');
 const to = ref('');
@@ -80,7 +80,7 @@ const { data, pending } = useAsyncData('load-fund', async () => {
 
   const fundABI: [] = await $fetch('/abi/fund.json');
 
-  const fundContract = new Contract(hash, fundABI, ethers.provider);
+  const fundContract = new Contract(address, fundABI, ethers.provider);
 
   return {
     fundRaisingClose: new Date(Number(await fundContract.fundRaisingClose()) * 1000),
@@ -97,10 +97,10 @@ const invest = async () => {
   const fundABI: [] = await $fetch('/abi/fund.json');
   const ierc20ABI: [] = await $fetch('/abi/IERC20.json');
 
-  const fundContract = new Contract(hash, fundABI, signer);
+  const fundContract = new Contract(address, fundABI, signer);
   const usdcContract = new Contract('0x6f14C02Fc1F78322cFd7d707aB90f18baD3B54f5', ierc20ABI, signer);
 
-  const usdcTran = await usdcContract.getFunction('approve').send(hash, 10n ** 18n);
+  const usdcTran = await usdcContract.getFunction('approve').send(address, 10n ** 18n);
   await usdcTran.wait();
   await fundContract.getFunction('invest').send(10n ** 18n);
 };
@@ -111,7 +111,7 @@ const swap = async () => {
 
   const fundABI: [] = await $fetch('/abi/fund.json');
 
-  const fundContract = new Contract(hash, fundABI, signer);
+  const fundContract = new Contract(address, fundABI, signer);
   console.log("swap", from.value, to.value, amount.value);
   await fundContract.getFunction('swapAssets').send(from.value, to.value, BigInt(amount.value) * 10n ** 18n);
 };
@@ -121,7 +121,7 @@ const changeCloseDate = async (method: string) => {
 
   const fundABI: [] = await $fetch('/abi/fund.json');
 
-  const fundContract = new Contract(hash, fundABI, signer);
+  const fundContract = new Contract(address, fundABI, signer);
 
   await fundContract.getFunction(method).send(BigInt(new Date().getTime()) / 1000n + 60n * 10n);
 };
