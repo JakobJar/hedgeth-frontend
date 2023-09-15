@@ -55,7 +55,6 @@
           <label for="amount">Amount</label>
           <InputNumber v-model="amount" id="amount"/>
           <Button label="Swap" @click="swap" />
-          <Button label="Create pool" @click="createPool" />
         </form>
         <Button label="Change close" @click="changeCloseDate('setFundClose')"/>
         <Button label="Change fund raising close" @click="changeCloseDate('setFundRaisingClose')"/>
@@ -92,7 +91,7 @@ const { data, pending } = useAsyncData('load-fund', async () => {
 }, {server: false});
 
 const invest = async () => {
-  const signer = await useEthersSigner(true);
+  const signer = await useEthersSigner();
 
   const fundABI: [] = await $fetch('/abi/fund.json');
   const ierc20ABI: [] = await $fetch('/abi/IERC20.json');
@@ -107,7 +106,7 @@ const invest = async () => {
 
 const swap = async () => {
   console.log("swap");
-  const signer = await useEthersSigner(true);
+  const signer = await useEthersSigner();
 
   const fundABI: [] = await $fetch('/abi/fund.json');
 
@@ -117,7 +116,7 @@ const swap = async () => {
 };
 
 const changeCloseDate = async (method: string) => {
-  const signer = await useEthersSigner(true);
+  const signer = await useEthersSigner();
 
   const fundABI: [] = await $fetch('/abi/fund.json');
 

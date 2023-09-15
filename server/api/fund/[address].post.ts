@@ -1,14 +1,21 @@
 import {PrismaClient} from "@prisma/client";
+import {getServerEthersProvider} from "~/server/ethers/server-ethers-provider";
+import {ethers} from "ethers";
 
 const prisma = new PrismaClient();
 
 export default defineEventHandler(async (event) => {
     const address = getRouterParam(event, "address");
     if (!address)
-        throw new Error("No hash");
-    const body = await readBody(event);
+        throw new Error("No address provided");
 
-    await prisma.fund.upsert({
+    const body = await readBody(event);
+    if (!body || !body.name)
+        throw new Error("No name provided");
+
+    // TODO: verify identity of sender
+
+    return prisma.fund.upsert({
         where: {
             address,
         },
@@ -22,5 +29,4 @@ export default defineEventHandler(async (event) => {
             description: body.description,
         }
     });
-    return "Success";
 });
