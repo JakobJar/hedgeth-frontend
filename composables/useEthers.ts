@@ -1,10 +1,7 @@
-import {AbstractProvider, BrowserProvider, ethers} from "ethers";
+import {AbstractProvider, BrowserProvider, ethers, Signer} from "ethers";
 
 export const useEthersProvider = async (): Promise<AbstractProvider> => {
-    // @ts-ignore
-    if (!window.ethereum) {
-        throw new Error("No window.ethereum available");
-    } else if (process.server) {
+    if (process.server) {
         const runtimeConfig = useRuntimeConfig();
         return ethers.getDefaultProvider(runtimeConfig.public.network, {
             infura: {
@@ -12,13 +9,16 @@ export const useEthersProvider = async (): Promise<AbstractProvider> => {
                 projectSecret: runtimeConfig.infura.projectSecret,
             },
         });
-    } else {
         // @ts-ignore
-        return new ethers.BrowserProvider(window.ethereum);
+    } else if (window.ethereum) {
+        // @ts-ignore
+        return new BrowserProvider(window.ethereum);
+    } else {
+        throw new Error("No window.ethereum available");
     }
 }
 
-export const useEthersSigner = async (): Promise<ethers.Signer> => {
+export const useEthersSigner = async (): Promise<Signer> => {
     const provider = await useEthersProvider();
     if (!(provider instanceof BrowserProvider))
         throw new Error("Provider is not a BrowserProvider");

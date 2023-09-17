@@ -1,21 +1,30 @@
+import {useEthersProvider} from "~/composables/useEthers";
+import {Contract, ethers} from "ethers";
 import {PrismaClient} from "@prisma/client";
-import {getServerEthersProvider} from "~/server/ethers/server-ethers-provider";
-import {ethers} from "ethers";
 
-const prisma = new PrismaClient();
+const prismaClient = new PrismaClient();
 
 export default defineEventHandler(async (event) => {
+    const ethersProvider = await useEthersProvider();
+
     const address = getRouterParam(event, "address");
     if (!address)
         throw new Error("No address provided");
 
     const body = await readBody(event);
-    if (!body || !body.name)
-        throw new Error("No name provided");
+    if (!body?.name || !body?.signedMessage)
+        throw new Error("Invalid data");
 
-    // TODO: verify identity of sender
+    const fundABI: any = await $fetch("/abi/Fund.json");
+    const contract = new Contract(address, fundABI, ethersProvider);
 
-    return prisma.fund.upsert({
+    const signer = ethers.verifyMessage(address, body.signedMessage);
+    const owner: string = await contract.owner();
+
+    if (signer !== owner)
+        throw new Error("Invalid signer");
+
+    return prismaClient.fund.upsert({
         where: {
             address,
         },

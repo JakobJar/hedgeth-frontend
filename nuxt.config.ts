@@ -2,7 +2,7 @@
 export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: [
-    '@sfxcode/nuxt-primevue',
+    '@sfxcode/nuxt-primevue'
   ],
   css: [
     'primevue/resources/primevue.css',
