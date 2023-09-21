@@ -11,7 +11,9 @@ datasource db {
 }
 
 model Fund {
-  address     String     @id
-  name        String
-  description String?
+  address         String     @id
+  name            String
+  description     String?
+  raisingClose    DateTime?
+  close           DateTime?
 }

@@ -13,6 +13,7 @@
       <template #content>
         <p>{{ fund?.description }}</p>
         <p>{{ fund?.address }}</p>
+        <small>{{ fund?.close?.toLocaleString() }} | {{ fund?.raisingClose?.toLocaleString() }}</small>
       </template>
     </Card>
   </NuxtLayout>

@@ -45,6 +45,8 @@ export default defineEventHandler(async (event) => {
             address: address,
             name: body.name,
             description: body.description,
+            raisingClose: new Date(await contract.raisingClose() * 1000),
+            close: new Date(await contract.close() * 1000)
         }
     });
 });
