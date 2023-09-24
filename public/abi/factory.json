@@ -1,0 +1,102 @@
+[
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_swapRouter",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_usdc",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "funds",
+    "outputs": [
+      {
+        "internalType": "contract Fund",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_minimumInvestment",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_investmentFee",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_performanceFee",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_fundRaisingClose",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_fundClose",
+        "type": "uint256"
+      }
+    ],
+    "name": "createFund",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getOpenFunds",
+    "outputs": [
+      {
+        "internalType": "contract Fund[]",
+        "name": "",
+        "type": "address[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getRaisingFunds",
+    "outputs": [
+      {
+        "internalType": "contract Fund[]",
+        "name": "",
+        "type": "address[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  }
+]

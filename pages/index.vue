@@ -5,7 +5,7 @@
         <Dropdown label="Show" v-model="selectedFilter" :options="filter" option-label="name"/>
       </template>
       <template #end>
-        <Button label="Create Fund" severity="success" @click="createFundDialog = true"/>
+        <CreateFundButton />
       </template>
     </Toolbar>
     <div class="card-list">
@@ -19,26 +19,11 @@
       </Card>
     </div>
   </NuxtLayout>
-
-  <Dialog v-model:visible="createFundDialog" modal header="Create fund" :style="{ width: '50vw' }">
-    <p>Enter the name of your fund and a description.</p>
-    <form class="create-fund-form">
-      <div class="input-group">
-        <label for="create-fund-name">Fund name</label>
-        <InputText id="create-fund-name" v-model="createFundForm.fundName" size="large" />
-      </div>
-      <div class="input-group">
-        <label for="create-fund-description">Fund description</label>
-        <Textarea v-model="createFundForm.fundDescription"/>
-      </div>
-    </form>
-    <template #footer>
-      <Button label="Create" @click="createFund" />
-    </template>
-  </Dialog>
 </template>
 
 <script setup lang="ts">
+import CreateFundButton from "~/components/home/CreateFundButton.vue";
+
 const router = useRouter();
 
 const selectedFilter = ref({ name: 'Show all funds', value: 'all' });
@@ -47,12 +32,6 @@ const filter = ref([
   { name: 'Show open funds', value: 'open' },
   { name: 'Show raising funds', value: 'raising' }
 ]);
-const createFundDialog = ref(false);
-
-const createFundForm = reactive({
-  fundName: '',
-  fundDescription: ''
-});
 
 const { data, pending, error } = useFetch('/api/fund');
 
@@ -81,18 +60,6 @@ const clickFund = async (address: string) => {
 
   &:hover {
     border-image-source: linear-gradient(to right, rgba(0, 200, 83, 0.5), rgba(178, 255, 89, 0.5));
-  }
-}
-
-.create-fund-form {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 16px;
-
-  .input-group {
-    display: flex;
-    flex-direction: column;
   }
 }
 </style>
