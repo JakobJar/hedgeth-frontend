@@ -57,17 +57,18 @@ const form = reactive({
   description: '',
   fee: 0,
   performanceFee: 0,
-  minimumInvestment: 0,
+  minimumInvestment: 1,
   fundRaisingClose,
   fundClose
 });
 
 const createFund = async () => {
+  const router = useRouter();
   const signer = await useEthersSigner();
 
   const fundABI: [] = await $fetch('/abi/factory.json');
 
-  const fundFactoryContract = new Contract('0x564bb092535b5237501B82bB4990a266d62ad48e', fundABI, signer);
+  const fundFactoryContract = new Contract('0xF5659Bfc262db4DD8A8C9B4b1464af6a37d59ed6', fundABI, signer);
 
   const fundTransaction = await fundFactoryContract.getFunction('createFund').send(
       BigInt(form.minimumInvestment) * 10n ** 18n,
@@ -77,8 +78,12 @@ const createFund = async () => {
       BigInt(Math.round(form.fundClose.getTime() / 1000)),
   );
   const receipt = await fundTransaction.wait();
-  if (receipt)
-    console.log(receipt.logs);
+  if (receipt && receipt.logs.length >= 3) {
+    const fundCreationEvent = receipt.logs[2];
+    let fundAddress = fundCreationEvent.topics[1];
+    fundAddress = "0x" + BigInt(fundAddress).toString(16);
+    await router.push(`/fund/${fundAddress}`);
+  }
 
   openDialog.value = false;
 }
