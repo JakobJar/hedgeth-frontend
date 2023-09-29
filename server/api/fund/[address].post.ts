@@ -1,6 +1,7 @@
 import {useEthersProvider} from "~/composables/useEthers";
 import {Contract, ethers} from "ethers";
 import {PrismaClient} from "@prisma/client";
+import * as fs from "fs";
 
 const prismaClient = new PrismaClient();
 
@@ -21,7 +22,7 @@ export default defineEventHandler(async (event) => {
             statusMessage: "No name or signedMessage provided"
         });
 
-    const fundABI: any = await $fetch("/abi/Fund.json");
+    const fundABI: string = JSON.parse(fs.readFileSync("public/abi/fund.json", "utf8"));
     const contract = new Contract(address, fundABI, ethersProvider);
 
     const signer = ethers.verifyMessage(address, body.signedMessage);
@@ -45,8 +46,8 @@ export default defineEventHandler(async (event) => {
             address: address,
             name: body.name,
             description: body.description,
-            raisingClose: new Date(await contract.raisingClose() * 1000),
-            close: new Date(await contract.close() * 1000)
+            raisingClose: new Date(Number(await contract.fundRaisingClose()) * 1000),
+            close: new Date(Number(await contract.fundClose()) * 1000)
         }
     });
 });

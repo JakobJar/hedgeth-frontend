@@ -3,12 +3,7 @@ import {AbstractProvider, BrowserProvider, ethers, Signer} from "ethers";
 export const useEthersProvider = async (): Promise<AbstractProvider> => {
     if (process.server) {
         const runtimeConfig = useRuntimeConfig();
-        return ethers.getDefaultProvider(runtimeConfig.public.network, {
-            infura: {
-                projectId: runtimeConfig.infura.projectId,
-                projectSecret: runtimeConfig.infura.projectSecret,
-            },
-        });
+        return new ethers.InfuraProvider(runtimeConfig.public.network, runtimeConfig.infura.projectId, runtimeConfig.infura.projectSecret);
         // @ts-ignore
     } else if (window.ethereum) {
         // @ts-ignore

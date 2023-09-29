@@ -8,7 +8,7 @@
   <form id="meta-form">
     <InputText v-model="metaForm.name" />
     <Textarea v-model="metaForm.description" />
-    <Button label="Submit"/>
+    <Button label="Submit" @click="changeMeta"/>
   </form>
 </template>
 
@@ -28,14 +28,17 @@ const metaForm = reactive({
 const changeMeta = async () => {
   const signer = await useEthersSigner();
 
+  const signedMessage = await signer.signMessage(props.address);
+
   const data = {
     name: metaForm.name,
-    description: metaForm.description
+    description: metaForm.description,
+    signedMessage
   }
 
   await $fetch(`/api/fund/${props.address}`, {
     method: 'POST',
-    data: metaForm,
+    body: data,
   });
 };
 
