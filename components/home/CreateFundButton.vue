@@ -68,7 +68,7 @@ const createFund = async () => {
 
   const fundABI: [] = await $fetch('/abi/factory.json');
 
-  const fundFactoryContract = new Contract('0xF5659Bfc262db4DD8A8C9B4b1464af6a37d59ed6', fundABI, signer);
+  const fundFactoryContract = new Contract(runtimeConfig.public.fundFactoryAddress, fundABI, signer);
 
   const fundTransaction = await fundFactoryContract.getFunction('createFund').send(
       BigInt(form.minimumInvestment) * 10n ** 18n,
