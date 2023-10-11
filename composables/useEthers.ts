@@ -1,4 +1,4 @@
-import {AbstractProvider, BrowserProvider, ethers, Signer} from "ethers";
+import {AbstractProvider, BrowserProvider, ethers, JsonRpcSigner} from "ethers";
 
 export const useEthersProvider = async (): Promise<AbstractProvider> => {
     if (process.server) {
@@ -13,7 +13,7 @@ export const useEthersProvider = async (): Promise<AbstractProvider> => {
     }
 }
 
-export const useEthersSigner = async (): Promise<Signer> => {
+export const useEthersSigner = async (): Promise<JsonRpcSigner> => {
     const provider = await useEthersProvider();
     if (!(provider instanceof BrowserProvider))
         throw new Error("Provider is not a BrowserProvider");

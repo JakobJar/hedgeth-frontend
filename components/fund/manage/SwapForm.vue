@@ -12,6 +12,12 @@
 
 <script setup lang="ts">
 import {Contract} from "ethers";
+import {AlphaRouter} from "@uniswap/smart-order-router";
+import {ChainId} from "@uniswap/sdk-core";
+
+const props = defineProps<{
+  address: string
+}>();
 
 const swapForm = reactive({
   from: '',
