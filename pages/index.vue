@@ -2,7 +2,7 @@
   <NuxtLayout name="main">
     <Toolbar>
       <template #start>
-        <Dropdown label="Show" v-model="selectedFilter" :options="filter" option-label="name"/>
+        <!--<Dropdown label="Show" v-model="selectedFilter" :options="filter" option-label="name"/>-->
       </template>
       <template #end>
         <CreateFundButton />

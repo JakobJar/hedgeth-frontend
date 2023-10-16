@@ -77,11 +77,24 @@ const createFund = async () => {
       BigInt(Math.round(form.fundRaisingClose.getTime() / 1000)),
       BigInt(Math.round(form.fundClose.getTime() / 1000)),
   );
+
   const receipt = await fundTransaction.wait();
   if (receipt && receipt.logs.length >= 3) {
     const fundCreationEvent = receipt.logs[2];
     let fundAddress = fundCreationEvent.topics[1];
     fundAddress = "0x" + BigInt(fundAddress).toString(16);
+
+    const signedMessage = await signer.signMessage(fundAddress);
+    const data = {
+      name: form.name,
+      description: form.description,
+      signedMessage
+    }
+    await $fetch(`/api/fund/${fundAddress}`, {
+      method: 'POST',
+      body: data,
+    });
+
     await router.push(`/fund/${fundAddress}`);
   }
 
