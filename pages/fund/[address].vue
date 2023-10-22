@@ -19,7 +19,7 @@
           <InvestorsTab :investments="data.investments" />
         </div>
       </TabPanel>
-      <TabPanel header="Manage">
+      <TabPanel v-if="data?.owner && data?.walletAddress && data?.owner.toUpperCase() === data?.walletAddress.toUpperCase()" header="Manage">
         <ManageTab :address="address" />
       </TabPanel>
     </TabView>
@@ -32,7 +32,6 @@ import ManageTab from "~/components/fund/manage/ManageTab.vue";
 import GeneralTab from "~/components/fund/GeneralTab.vue";
 import AssetsTab from "~/components/fund/AssetsTab.vue";
 import InvestorsTab from "~/components/fund/InvestorsTab.vue";
-import {meta} from "@formkit/inputs";
 
 const route = useRoute();
 
@@ -50,7 +49,8 @@ const { data, pending } = useAsyncData(async () => {
     fundClose: new Date(Number(await fundContract.fundClose()) * 1000),
     investments: await fundContract.getInvestments(),
     assetValues: await fundContract.getAssetValues(),
-    owner: await fundContract.owner()
+    owner: await fundContract.owner(),
+    walletAddress: await useCurrentAddress(),
   };
 }, {server: false});
 

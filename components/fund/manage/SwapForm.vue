@@ -1,19 +1,23 @@
 <template>
   <form>
-    <label for="from">From</label>
-    <InputText v-model="swapForm.from" id="from"/>
-    <label for="to">To</label>
-    <InputText v-model="swapForm.to" id="to"/>
-    <label for="amount">Amount</label>
-    <InputNumber v-model="swapForm.amount" id="amount"/>
+    <div class="form-input">
+      <label for="from">From</label>
+      <InputText v-model="swapForm.from" id="from"/>
+    </div>
+    <div class="form-input">
+      <label for="to">To</label>
+      <InputText v-model="swapForm.to" id="to"/>
+    </div>
+    <div class="form-input">
+      <label for="amount">Amount</label>
+      <InputNumber v-model="swapForm.amount" id="amount"/>
+    </div>
     <Button label="Swap" @click="swap" />
   </form>
 </template>
 
 <script setup lang="ts">
 import {Contract} from "ethers";
-import {AlphaRouter} from "@uniswap/smart-order-router";
-import {ChainId} from "@uniswap/sdk-core";
 
 const props = defineProps<{
   address: string
@@ -35,6 +39,15 @@ const swap = async () => {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
 
+.form-input {
+  display: flex;
+  flex-direction: column;
+}
 </style>

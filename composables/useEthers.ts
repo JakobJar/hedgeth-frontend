@@ -20,3 +20,12 @@ export const useEthersSigner = async (): Promise<JsonRpcSigner> => {
 
     return await provider.getSigner();
 }
+
+export const useCurrentAddress = async (): Promise<string | undefined> => {
+    const provider = await useEthersProvider();
+    if (!(provider instanceof BrowserProvider))
+        return undefined;
+
+    const accounts: string[] = await provider.send("eth_requestAccounts", []);
+    return accounts[0];
+}
