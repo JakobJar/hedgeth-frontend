@@ -18,7 +18,7 @@
         </div>
         <div class="input-group">
           <label for="create-fund-close">Fund close</label>
-          <Calendar id="create-fund-close" v-model="form.fundClose" show-time :min-date="fundRaisingClose" />
+          <Calendar id="create-fund-close" v-model="form.fundClose" show-time :min-date="form.fundRaisingClose" />
         </div>
       </div>
       <div class="input-group-horizontal">

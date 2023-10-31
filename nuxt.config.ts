@@ -16,7 +16,8 @@ export default defineNuxtConfig({
     },
     public: {
       network: process.env.NETWORK ?? 'sepolia',
-      fundFactoryAddress: process.env.FUND_FACTORY
+      fundFactoryAddress: process.env.FUND_FACTORY,
+      usdcAddress: process.env.USDC_ADDRESS
     }
   }
 })

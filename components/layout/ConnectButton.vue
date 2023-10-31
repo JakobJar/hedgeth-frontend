@@ -6,8 +6,8 @@
 <script setup lang="ts">
 const walletAddress = ref<string | undefined>(undefined);
 
-useCurrentAddress().then(address => {
-  walletAddress.value = address;
+onMounted(async () => {
+  walletAddress.value = await useCurrentAddress();
 });
 
 const connectWallet = async () => {

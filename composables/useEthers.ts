@@ -22,10 +22,11 @@ export const useEthersSigner = async (): Promise<JsonRpcSigner> => {
 }
 
 export const useCurrentAddress = async (): Promise<string | undefined> => {
-    const provider = await useEthersProvider();
-    if (!(provider instanceof BrowserProvider))
+    // @ts-ignore
+    const provider = window.ethereum;
+    if (!provider)
         return undefined;
 
-    const accounts: string[] = await provider.send("eth_requestAccounts", []);
+    const accounts: string[] = await provider.request({method: 'eth_accounts'});
     return accounts[0];
 }
