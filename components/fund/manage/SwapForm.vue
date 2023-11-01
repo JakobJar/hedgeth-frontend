@@ -17,11 +17,13 @@
 </template>
 
 <script setup lang="ts">
-import {Contract} from "ethers";
+import {Contract, ethers} from "ethers";
 
 const props = defineProps<{
   address: string
 }>();
+
+const runtimeConfig = useRuntimeConfig();
 
 const swapForm = reactive({
   from: '',
@@ -34,8 +36,54 @@ const swap = async () => {
 
   const fundABI: [] = await $fetch('/abi/fund.json');
 
+  // TODO: load decimals
+  const amountIn = BigInt(swapForm.amount) * 10n ** 18n;
+  const minAmountOut = 0n;
+  const routerRequestBody = {
+    "amount": amountIn,
+    "tradeType": 0,
+    "currencyAmount": {
+      "address": swapForm.from,
+      "decimals": 18,
+    },
+    "currency": {
+      "address": swapForm.to,
+      "decimals": 18,
+    }
+  }
+
+  const routerResult: any = await $fetch(runtimeConfig.public.smartRouterUrl + '/route', {
+    method: 'POST',
+    body: JSON.stringify(routerRequestBody, (key, value) =>
+        typeof value === 'bigint'
+            ? value.toString()
+            : value
+    ),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  });
+
+  const pools = routerResult.route[0].route.pools;
+  const encodeTypes: string[] = [];
+  const encodeValues: any[] = [];
+  for (let i = 0; i < pools.length; i++) {
+    const pool = pools[i];
+    if (i === 0) {
+      encodeTypes.push('address');
+      encodeValues.push(pool.token0.address);
+    }
+    encodeTypes.push('uint24');
+    encodeValues.push(pool.fee);
+
+    encodeTypes.push('address');
+    encodeValues.push(pool.token1.address);
+  }
+
+  const encodedPath = ethers.AbiCoder.defaultAbiCoder().encode(encodeTypes, encodeValues);
+
   const fundContract = new Contract(props.address, fundABI, signer);
-  await fundContract.getFunction('swapAssets').send(swapForm.from, swapForm.to, BigInt(swapForm.amount) * 10n ** 18n);
+  await fundContract.getFunction('swapAssets').send(encodedPath, amountIn, minAmountOut);
 };
 </script>
 
