@@ -33,7 +33,7 @@ const invest = async () => {
   const signer = await useEthersSigner();
 
   const fundABI: [] = await $fetch('/abi/fund.json');
-  const ierc20ABI: [] = await $fetch('/abi/IERC20.json');
+  const ierc20ABI: [] = await $fetch('/abi/ierc20.json');
 
   const fundContract = new Contract(props.address, fundABI, signer);
   const usdcContract = new Contract(runtimeConfig.public.usdcAddress, ierc20ABI, signer);

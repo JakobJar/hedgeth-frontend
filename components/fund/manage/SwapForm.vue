@@ -64,23 +64,22 @@ const swap = async () => {
     }
   });
 
-  const pools = routerResult.route[0].route.pools;
+  const route = routerResult.route[0];
   const encodeTypes: string[] = [];
   const encodeValues: any[] = [];
-  for (let i = 0; i < pools.length; i++) {
-    const pool = pools[i];
-    if (i === 0) {
-      encodeTypes.push('address');
-      encodeValues.push(pool.token0.address);
+  for (let i = 0; i < route.tokenPath.length; i++) {
+    const token = route.tokenPath[i];
+    if (i > 0) {
+      encodeTypes.push('uint24');
+      encodeValues.push(route.route.pools[i - 1].fee);
     }
-    encodeTypes.push('uint24');
-    encodeValues.push(pool.fee);
-
     encodeTypes.push('address');
-    encodeValues.push(pool.token1.address);
+    encodeValues.push(token.address);
   }
 
-  const encodedPath = ethers.AbiCoder.defaultAbiCoder().encode(encodeTypes, encodeValues);
+  console.log(encodeValues)
+  const encodedPath = ethers.solidityPacked(encodeTypes, encodeValues);
+  console.log(encodedPath)
 
   const fundContract = new Contract(props.address, fundABI, signer);
   await fundContract.getFunction('swapAssets').send(encodedPath, amountIn, minAmountOut);
