@@ -11,9 +11,16 @@ datasource db {
 }
 
 model Fund {
-  address         String     @id
+  address         Bytes    @id
   name            String
   description     String?
   raisingClose    DateTime?
   close           DateTime?
+}
+
+model Token {
+  address         Bytes    @id
+  name            String
+  symbol          String
+  decimals        Int
 }

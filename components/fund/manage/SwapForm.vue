@@ -76,10 +76,7 @@ const swap = async () => {
     encodeTypes.push('address');
     encodeValues.push(token.address);
   }
-
-  console.log(encodeValues)
   const encodedPath = ethers.solidityPacked(encodeTypes, encodeValues);
-  console.log(encodedPath)
 
   const fundContract = new Contract(props.address, fundABI, signer);
   await fundContract.getFunction('swapAssets').send(encodedPath, amountIn, minAmountOut);

@@ -2,6 +2,7 @@ import {useEthersProvider} from "~/composables/useEthers";
 import {Contract, ethers} from "ethers";
 import {PrismaClient} from "@prisma/client";
 import * as fs from "fs";
+import {convertAddressToBuffer} from "~/utils/address-util";
 
 const prismaClient = new PrismaClient();
 
@@ -34,16 +35,17 @@ export default defineEventHandler(async (event) => {
             message: "Invalid signature"
         });
 
+    const addressBuffer = convertAddressToBuffer(address);
     return prismaClient.fund.upsert({
         where: {
-            address,
+            address: addressBuffer,
         },
         update: {
             name: body.name,
             description: body.description,
         },
         create: {
-            address: address,
+            address: addressBuffer,
             name: body.name,
             description: body.description,
             raisingClose: new Date(Number(await contract.fundRaisingClose()) * 1000),
