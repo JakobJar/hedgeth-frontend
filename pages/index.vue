@@ -1,23 +1,6 @@
 <template>
   <NuxtLayout name="main">
-    <Toolbar>
-      <template #start>
-        <!--<Dropdown label="Show" v-model="selectedFilter" :options="filter" option-label="name"/>-->
-      </template>
-      <template #end>
-        <CreateFundButton />
-      </template>
-    </Toolbar>
-    <div class="card-list">
-      <Card v-if="data" v-for="fund in data" @click="clickFund(fund.address)" class="fund-card">
-        <template #title>{{ fund?.name }}</template>
-        <template #content>
-          <p>{{ fund?.description }}</p>
-          <p>{{ fund?.address }}</p>
-          <small>{{ fund?.close?.toLocaleString() }} | {{ fund?.raisingClose?.toLocaleString() }}</small>
-        </template>
-      </Card>
-    </div>
+
   </NuxtLayout>
 </template>
 

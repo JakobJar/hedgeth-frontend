@@ -5,9 +5,7 @@ export default defineNuxtConfig({
     '@sfxcode/nuxt-primevue'
   ],
   css: [
-    'primevue/resources/primevue.css',
-    'primevue/resources/themes/viva-dark/theme.css',
-    'primeicons/primeicons.css',
+    '~/assets/css/main.scss',
   ],
   runtimeConfig: {
     infura: {
