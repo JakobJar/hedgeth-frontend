@@ -5,29 +5,30 @@
       <div class="menu-item selected">
         <span>Home</span>
       </div>
+      <div class="menu-item">
+        <span>My Investments</span>
+      </div>
+      <div class="menu-item">
+        <span>My Funds</span>
+      </div>
+      <div class="menu-item">
+        <span>FAQ</span>
+      </div>
     </div>
+    <ConnectButton />
   </nav>
 </template>
 
 <script setup lang="ts">
-import {MenuItem} from "primevue/menuitem";
 import ConnectButton from "~/components/layout/ConnectButton.vue";
-
-const menu: MenuItem[] = [
-  {
-    label: "Home",
-    icon: "pi pi-fw pi-home",
-    to: "/"
-  }
-]
 </script>
 
 <style scoped lang="scss">
 nav {
   display: flex;
   width: 300px;
-  height: 100%;
-  padding: 32px;
+  height: calc(100vh - 2 * var(--large-spacing));
+  padding: var(--large-spacing);
   flex-direction: column;
   justify-content: space-between;
   align-items: flex-start;
@@ -42,19 +43,27 @@ nav {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 16px;
+  gap: var(--medium-spacing);
   align-self: stretch;
 
   .menu-item {
     display: flex;
     padding: 16px 32px;
     align-items: center;
-    gap: 10px;
+    gap: var(--small-spacing);
     align-self: stretch;
-    border-radius: 3px;
+    border-radius: var(--border-radius);
+    transition: 0.5s;
+
+    &:hover {
+      background: var(--secondary-color);
+      cursor: pointer;
+    }
 
     &.selected {
       background: linear-gradient(90deg, #FF6E7F 0%, #BFE9FF 100%);
+      color: #FFFFFF;
+      font-weight: 500;
     }
   }
 }

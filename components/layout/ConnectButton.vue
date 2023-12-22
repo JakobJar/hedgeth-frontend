@@ -1,5 +1,5 @@
 <template>
-  <Button v-if="!walletAddress" label="Connect Wallet" @click="connectWallet" />
+  <button v-if="!walletAddress" @click="connectWallet" type="button">Connect Wallet</button>
   <span v-else>{{ walletAddress }}</span>
 </template>
 

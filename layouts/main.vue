@@ -1,11 +1,13 @@
 <template>
-  <div class="site">
+  <div class="layout">
     <Navbar>
 
     </Navbar>
-    <slot>
+    <main class="content">
+      <slot>
 
-    </slot>
+      </slot>
+    </main>
   </div>
 </template>
 
@@ -14,12 +16,19 @@ import Navbar from "~/components/layout/Navbar.vue";
 </script>
 
 <style scoped lang="scss">
-.site {
+.layout {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  width: 100vw;
+  background: var(--background-color);
+}
+
+.content {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  height: 100vh;
-  width: 100vw;
-  background: var(--background-color);
+  width: 100%;
+  padding: var(--large-spacing);
 }
 </style>
