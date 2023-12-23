@@ -2,7 +2,6 @@ import {useEthersProvider} from "~/composables/useEthers";
 import {Contract, ethers} from "ethers";
 import {PrismaClient} from "@prisma/client";
 import * as fs from "fs";
-import {convertAddressToBuffer} from "~/utils/address-util";
 
 const prismaClient = new PrismaClient();
 
@@ -27,29 +26,35 @@ export default defineEventHandler(async (event) => {
     const contract = new Contract(address, fundABI, ethersProvider);
 
     const signer = ethers.verifyMessage(address, body.signedMessage);
-    const owner: string = await contract.owner();
+    const manager: string = await contract.manager();
 
-    if (signer !== owner)
+    if (signer !== manager)
         throw createError({
             statusCode: 401,
             message: "Invalid signature"
         });
 
-    const addressBuffer = convertAddressToBuffer(address);
-    return prismaClient.fund.upsert({
-        where: {
-            address: addressBuffer,
-        },
-        update: {
-            name: body.name,
-            description: body.description,
-        },
-        create: {
-            address: addressBuffer,
-            name: body.name,
-            description: body.description,
-            raisingClose: new Date(Number(await contract.fundRaisingClose()) * 1000),
-            close: new Date(Number(await contract.fundClose()) * 1000)
-        }
-    });
+    const fund = await prismaClient.fund.findUnique({where: {address: address}, select: {address: true}});
+    if (fund) {
+        prismaClient.fund.update({
+            where: {
+                address,
+            },
+            data: {
+                name: body.name,
+                description: body.description,
+            }
+        });
+    } else {
+        prismaClient.fund.create({
+            data: {
+                address: address,
+                name: body.name,
+                manager: manager,
+                description: body.description,
+                raisingClose: new Date(Number(await contract.fundRaisingClose()) * 1000),
+                close: new Date(Number(await contract.fundClose()) * 1000)
+            }
+        });
+    }
 });

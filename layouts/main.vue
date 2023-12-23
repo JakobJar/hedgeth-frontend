@@ -30,5 +30,6 @@ import Navbar from "~/components/layout/Navbar.vue";
   justify-content: flex-start;
   width: 100%;
   padding: var(--large-spacing);
+  gap: var(--large-spacing);
 }
 </style>

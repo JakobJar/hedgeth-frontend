@@ -1,11 +1,10 @@
 import {PrismaClient} from "@prisma/client";
-import {convertAddressToBuffer} from "~/utils/address-util";
 
 const prismaClient = new PrismaClient();
 
 export default defineEventHandler(async (event) => {
-    const addressBuffer = convertAddressToBuffer(getRouterParam(event, "address"));
-    if (!addressBuffer.length)
+    const address = getRouterParam(event, "address");
+    if (!address)
         throw createError({
             status: 400,
             statusMessage: "No address provided"
@@ -13,7 +12,7 @@ export default defineEventHandler(async (event) => {
 
     return prismaClient.fund.findUnique({
         where: {
-            address: addressBuffer,
+            address: address,
         }
     });
 });

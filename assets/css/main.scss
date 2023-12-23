@@ -20,7 +20,7 @@
 
 body {
   font-family: "Inter", sans-serif;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 400;
 }
 
@@ -47,5 +47,40 @@ button {
     cursor: pointer;
     color: var(--inverted-primary-color);
     background-color: var(--primary-color);
+  }
+}
+
+table {
+  border-collapse: collapse;
+
+  & > caption {
+    display: none;
+  }
+
+  thead {
+    padding: var(--small-spacing) 0;
+    border-bottom: 1px solid var(--primary-color);
+  }
+
+  th {
+    text-align: center;
+    padding-bottom: var(--small-spacing);
+  }
+
+  td {
+    text-align: center;
+    padding: var(--medium-spacing) 0;
+  }
+
+  tbody > tr {
+    transition: 0.5s;
+
+    &.selectable {
+      cursor: pointer;
+    }
+
+    &:hover {
+      background-color: var(--secondary-color);
+    }
   }
 }

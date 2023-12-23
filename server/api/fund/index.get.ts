@@ -11,5 +11,5 @@ export default defineEventHandler(async (event) => {
             statusMessage: "Cannot load more than 25"
         });
     const skip = typeof query.skip == "number" ? query.skip : 0;
-    return prismaClient.fund.findMany({skip: skip, take: take});
+    return prismaClient.fund.findMany({skip: skip, take: take, select: {address: true, name: true, manager: true, raisingClose: true, close: true}});
 });
