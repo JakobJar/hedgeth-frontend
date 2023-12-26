@@ -26,7 +26,7 @@ import ConnectButton from "~/components/layout/ConnectButton.vue";
 <style scoped lang="scss">
 nav {
   display: flex;
-  width: 300px;
+  width: calc(320px - 2 * var(--large-spacing));
   height: calc(100vh - 2 * var(--large-spacing));
   padding: var(--large-spacing);
   flex-direction: column;

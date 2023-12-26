@@ -28,17 +28,9 @@
 </template>
 
 <script setup lang="ts">
-import CreateFundButton from "~/components/home/CreateFundButton.vue";
 import SearchBar from "~/components/home/SearchBar.vue";
 
 const router = useRouter();
-
-const selectedFilter = ref({ name: 'Show all funds', value: 'all' });
-const filter = ref([
-  { name: 'Show all funds', value: 'all' },
-  { name: 'Show open funds', value: 'open' },
-  { name: 'Show raising funds', value: 'raising' }
-]);
 
 const { data, pending, error } = useFetch('/api/fund');
 

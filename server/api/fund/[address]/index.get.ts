@@ -1,8 +1,8 @@
 import {PrismaClient} from "@prisma/client";
 
-const prismaClient = new PrismaClient();
-
 export default defineEventHandler(async (event) => {
+    const prismaClient: PrismaClient = event.context.prisma;
+
     const address = getRouterParam(event, "address");
     if (!address)
         throw createError({

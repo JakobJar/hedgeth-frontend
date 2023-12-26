@@ -1,12 +1,11 @@
 import {useEthersProvider} from "~/composables/useEthers";
 import {Contract, ethers} from "ethers";
-import {PrismaClient} from "@prisma/client";
 import * as fs from "fs";
-
-const prismaClient = new PrismaClient();
+import {PrismaClient} from "@prisma/client";
 
 export default defineEventHandler(async (event) => {
     const ethersProvider = await useEthersProvider();
+    const prismaClient: PrismaClient = event.context.prisma;
 
     const address = getRouterParam(event, "address");
     if (!address)

@@ -1,28 +1,6 @@
 <template>
   <NuxtLayout name="main">
-    <Panel :header="metadata?.name ? metadata.name : 'Loading...'">
-      <p v-if="metadata?.description && !metadataPending && !metadataError">{{ metadata.description }}</p>
-    </Panel>
-    <TabView>
-      <TabPanel header="General">
-        <div v-if="data && !pending">
-          <GeneralTab :owner="data.owner" :fund-close="data.fundClose" :fund-raising-close="data.fundRaisingClose" :address="address" />
-        </div>
-      </TabPanel>
-      <TabPanel header="Assets">
-        <div v-if="data && !pending">
-          <AssetsTab :asset-values="data.assetValues" />
-        </div>
-      </TabPanel>
-      <TabPanel header="Investors">
-        <div v-if="data && !pending">
-          <InvestorsTab :investments="data.investments" />
-        </div>
-      </TabPanel>
-      <TabPanel v-if="data?.owner && data?.walletAddress && data?.owner.toUpperCase() === data?.walletAddress.toUpperCase()" header="Manage">
-        <ManageTab :address="address" />
-      </TabPanel>
-    </TabView>
+    
   </NuxtLayout>
 </template>
 
