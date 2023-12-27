@@ -1,20 +1,5 @@
 <template>
-  <h1>General</h1>
-  <p>Address: <a href="https://sepolia.etherscan.io/address/{{ props.address }}">{{ props.address }}</a></p>
-  <dl>
-    <dt>Owner:</dt>
-    <dd><a href="https://sepolia.etherscan.io/address/{{ props.owner }}">{{ props.owner }}</a></dd>
-    <dt>Fund raising close:</dt>
-    <dd>{{ props.fundRaisingClose.toLocaleString() }}</dd>
-    <dt>Fund close:</dt>
-    <dd>{{ props.fundClose.toLocaleString() }}</dd>
-  </dl>
-  <Toolbar>
-    <template #center>
-      <Button label="Invest" @click="invest" icon="pi pi-plus" />
-      <Button label="Payout" @click="payout" icon="pi pi-download" severity="success" />
-    </template>
-  </Toolbar>
+
 </template>
 
 <script setup lang="ts">

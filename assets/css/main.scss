@@ -2,9 +2,10 @@
 
 :root {
   --background-color: #ffffff;
+  --background-hover: #F5F5F5;
 
   --primary-color: #000000;
-  --secondary-color: #F5F5F5;
+  --secondary-color: #868686;
   --inverted-primary-color: #ffffff;
 
   --border-radius: 3px;
@@ -22,6 +23,16 @@ body {
   font-family: "Inter", sans-serif;
   font-size: 15px;
   font-weight: 400;
+}
+
+h1 {
+  font-size: 2rem;
+  font-weight: 500;
+}
+
+h2 {
+  font-size: 1.25rem;
+  font-weight: 500;
 }
 
 button {
@@ -80,7 +91,7 @@ table {
     }
 
     &:hover {
-      background-color: var(--secondary-color);
+      background-color: var(--background-hover);
     }
   }
 }

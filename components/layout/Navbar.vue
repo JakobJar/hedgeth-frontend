@@ -53,10 +53,9 @@ nav {
     gap: var(--small-spacing);
     align-self: stretch;
     border-radius: var(--border-radius);
-    transition: 0.5s;
 
     &:hover {
-      background: var(--secondary-color);
+      background: var(--background-hover);
       cursor: pointer;
     }
 

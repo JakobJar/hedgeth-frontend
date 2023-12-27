@@ -3,11 +3,9 @@
     <Navbar>
 
     </Navbar>
-    <main class="content">
-      <slot>
+    <slot>
 
-      </slot>
-    </main>
+    </slot>
   </div>
 </template>
 
@@ -22,14 +20,5 @@ import Navbar from "~/components/layout/Navbar.vue";
   justify-content: flex-start;
   width: 100vw;
   background: var(--background-color);
-}
-
-.content {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  width: 100%;
-  padding: var(--large-spacing);
-  gap: var(--large-spacing);
 }
 </style>
