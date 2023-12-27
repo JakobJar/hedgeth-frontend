@@ -1,6 +1,8 @@
 import {QueryApi} from "@influxdata/influxdb-client";
 
-const getIntervalInterval = (range: string): string | undefined => {
+const getIntervalInterval = (range: any): string | undefined => {
+    if (typeof range !== "string")
+        return undefined;
     if (range === "1d")
         return "1h";
     if (range === "1w")
@@ -18,7 +20,7 @@ export default defineEventHandler(async (event) => {
     const influxQuery: QueryApi = event.context.influx;
 
     const address = getRouterParam(event, "address");
-    const range = getQuery(event).range || "0";
+    const range = getQuery(event).range ?? "0";
 
     if (!address)
         throw createError({
