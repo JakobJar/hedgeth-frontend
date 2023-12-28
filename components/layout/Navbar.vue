@@ -2,18 +2,10 @@
   <nav>
     <div class="logo-placeholder"></div>
     <div class="menu">
-      <div class="menu-item selected">
-        <span>Home</span>
-      </div>
-      <div class="menu-item">
-        <span>My Investments</span>
-      </div>
-      <div class="menu-item">
-        <span>My Funds</span>
-      </div>
-      <div class="menu-item">
-        <span>FAQ</span>
-      </div>
+      <button class="menu-item selected">Home</button>
+      <button class="menu-item">My Investments</button>
+      <button class="menu-item">My Funds</button>
+      <button class="menu-item">FAQ</button>
     </div>
     <ConnectButton />
   </nav>
@@ -48,7 +40,7 @@ nav {
 
   .menu-item {
     display: flex;
-    padding: 16px 32px;
+    padding: var(--medium-spacing) var(--large-spacing);
     align-items: center;
     gap: var(--small-spacing);
     align-self: stretch;

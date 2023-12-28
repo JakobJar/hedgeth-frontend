@@ -11,8 +11,9 @@
           <span :class="{selected: currentTab === 'investors'}" @click="switchTab('investors')">Investors</span>
         </div>
       </header>
-      <GeneralTab v-if="currentTab === 'general'"/>
+      <GeneralTab v-if="currentTab === 'general'" :address="address"/>
       <AssetsTab v-if="currentTab === 'assets'" :assetValues="data?.assetValues"/>
+      <InvestorsTab v-if="currentTab === 'investors'" :investments="data?.investments"/>
     </main>
     <section id="transaction-sidebar">
       <h3>Recent Transaction</h3>
@@ -54,7 +55,7 @@ const { data, pending } = useAsyncData(async () => {
   };
 }, {server: false});
 
-const { data: metadata, pending: metadataPending, error: metadataError } = useFetch(`/api/fund/${address}`);
+const { data: metadata, pending: metadataPending } = useFetch(`/api/fund/${address}`);
 </script>
 
 <style scoped lang="scss">

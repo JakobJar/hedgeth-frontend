@@ -1,10 +1,10 @@
 <template>
   <div class="chart">
     <div class="range">
-      <span v-for="(timeframe, index) in ranges" :key="index" @click="selectedTimeframe = index"
+      <button v-for="(timeframe, index) in ranges" :key="index" @click="selectedTimeframe = index"
            :class="{'range-item': true, 'selected': selectedTimeframe === index}">
         {{ timeframe.label }}
-      </span>
+      </button>
     </div>
     <Line v-if="!pending && data" :data="data.chartData" :options="chartOptions"/>
   </div>

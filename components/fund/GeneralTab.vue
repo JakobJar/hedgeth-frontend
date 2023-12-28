@@ -1,4 +1,4 @@
-<template>
+<template xmlns="http://www.w3.org/1999/html">
   <PriceChart address="0x52cb9a25c0edf8b25127f09369320e3bfd475589" />
   <section id="investing">
     <div class="investment-value">
@@ -10,6 +10,12 @@
       <button @click="payout">Payout</button>
     </div>
   </section>
+  <section id="metadata">
+    <div class="fund-title">
+      <h2>{{ props.title ?? 'Loading...' }}</h2>
+      <span>{{ props.address }}</span>
+    </div>
+  </section>
 </template>
 
 <script setup lang="ts">
@@ -18,7 +24,8 @@ import PriceChart from "~/components/fund/PriceChart.vue";
 
 const runtimeConfig = useRuntimeConfig();
 const props = defineProps<{
-  address: string
+  address: string,
+  title?: string,
 }>();
 
 const invest = async () => {
@@ -95,6 +102,21 @@ const payout = async () => {
         color: var(--primary-color);
       }
     }
+  }
+}
+
+#metadata {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--medium-spacing);
+  align-self: stretch;
+
+  .fund-title {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-start;
   }
 }
 </style>
