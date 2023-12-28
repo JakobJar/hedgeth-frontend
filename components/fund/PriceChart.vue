@@ -1,10 +1,10 @@
 <template>
   <div class="chart">
     <div class="range">
-      <div v-for="(timeframe, index) in ranges" :key="index" @click="selectedTimeframe = index"
+      <span v-for="(timeframe, index) in ranges" :key="index" @click="selectedTimeframe = index"
            :class="{'range-item': true, 'selected': selectedTimeframe === index}">
-        <span>{{ timeframe.label }}</span>
-      </div>
+        {{ timeframe.label }}
+      </span>
     </div>
     <Line v-if="!pending && data" :data="data.chartData" :options="chartOptions"/>
   </div>
@@ -39,6 +39,10 @@ const selectedTimeframe = ref(1);
 const chartOptions = {
   responsive: true,
   borderColor: '#868686',
+  interaction: {
+    mode: 'nearest',
+    intersect: false,
+  },
   scales: {
     x: {
       ticks: {
@@ -56,6 +60,7 @@ const chartOptions = {
         callback: (value: number) => {
           return '$' + value.toLocaleString()
         },
+        maxTicksLimit: 5,
         font: {
           size: 13,
           family: 'Inter',
@@ -83,9 +88,12 @@ const {data, pending, error} = useAsyncData(async () => {
     chartData: {
       labels: data.map((item: any) => new Date(item._time).toLocaleString()),
       datasets: [{
-        data: data.map((item: any) => item._value * 100),
+        data: data.map((item: any) => Math.random() * 1000),
         borderColor: '#000000',
         backgroundColor: '#000000',
+        borderWidth: 2,
+        pointRadius: 0,
+        tension: 0.2,
       }]
     }
   };
@@ -95,7 +103,6 @@ const {data, pending, error} = useAsyncData(async () => {
 <style scoped lang="scss">
 .chart {
   display: flex;
-  height: 800px;
   flex-direction: column;
   align-items: flex-start;
   gap: var(--medium-spacing);
@@ -117,6 +124,7 @@ const {data, pending, error} = useAsyncData(async () => {
     justify-content: center;
     align-items: center;
     cursor: pointer;
+    font-size: 0.9rem;
 
     color: var(--secondary-color);
 
@@ -127,10 +135,6 @@ const {data, pending, error} = useAsyncData(async () => {
     &.selected {
       background: var(--primary-color);
       color: var(--background-color);
-    }
-
-    & > span {
-      font-size: 0.9rem;
     }
   }
 }

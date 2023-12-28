@@ -1,18 +1,25 @@
 <template>
-
+  <PriceChart address="0x52cb9a25c0edf8b25127f09369320e3bfd475589" />
+  <section id="investing">
+    <div class="investment-value">
+      <span>Your Investment</span>
+      <h2>$0.00</h2>
+    </div>
+    <div class="investment-actions">
+      <button @click="invest">Invest</button>
+      <button @click="payout">Payout</button>
+    </div>
+  </section>
 </template>
 
 <script setup lang="ts">
 import {Contract} from "ethers";
-
-const props = defineProps<{
-  address: string,
-  owner: string,
-  fundRaisingClose: Date,
-  fundClose: Date,
-}>();
+import PriceChart from "~/components/fund/PriceChart.vue";
 
 const runtimeConfig = useRuntimeConfig();
+const props = defineProps<{
+  address: string
+}>();
 
 const invest = async () => {
   const signer = await useEthersSigner();
@@ -38,6 +45,56 @@ const payout = async () => {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+#investing {
+  display: flex;
+  padding: var(--medium-spacing);
+  justify-content: space-between;
+  align-items: flex-end;
+  align-self: stretch;
 
+  border-radius: var(--border-radius);
+  background: var(--primary-color);
+
+  .investment-value {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--small-spacing);
+
+    & > span {
+      color: var(--inverted-secondary-color);
+    }
+
+    & > h2 {
+      color: var(--inverted-primary-color);
+    }
+  }
+
+  .investment-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-start;
+    gap: var(--small-spacing);
+
+    & > button {
+      display: flex;
+      padding: 3px var(--small-spacing);
+      justify-content: center;
+      align-items: center;
+      gap: var(--small-spacing);
+
+      border-radius: var(--border-radius);
+      border: 1px solid var(--inverted-primary-color);
+      background: var(--primary-color);
+      color: var(--inverted-primary-color);
+      font-size: 0.9rem;
+
+      &:hover {
+        background: var(--inverted-primary-color);
+        color: var(--primary-color);
+      }
+    }
+  }
+}
 </style>

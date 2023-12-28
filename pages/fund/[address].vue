@@ -7,14 +7,15 @@
           <h1>$2,011.11</h1>
         </div>
         <div class="fund-menu">
-          <span>Assets</span>
-          <span>Investors</span>
+          <span :class="{selected: currentTab === 'assets'}" @click="switchTab('assets')">Assets</span>
+          <span :class="{selected: currentTab === 'investors'}" @click="switchTab('investors')">Investors</span>
         </div>
       </header>
-      <PriceChart address="0x52cb9a25c0edf8b25127f09369320e3bfd475589" />
+      <GeneralTab v-if="currentTab === 'general'"/>
+      <AssetsTab v-if="currentTab === 'assets'" :assetValues="data?.assetValues"/>
     </main>
     <section id="transaction-sidebar">
-      <h2>Recent Transaction</h2>
+      <h3>Recent Transaction</h3>
     </section>
   </NuxtLayout>
 </template>
@@ -28,8 +29,17 @@ import InvestorsTab from "~/components/fund/InvestorsTab.vue";
 import PriceChart from "~/components/fund/PriceChart.vue";
 
 const route = useRoute();
-
 const address = Array.isArray(route.params.address) ? route.params.address[0] : route.params.address;
+
+const currentTab = ref('general');
+
+const switchTab = (tab: string) => {
+  if (tab === currentTab.value) {
+    currentTab.value = 'general';
+    return;
+  }
+  currentTab.value = tab;
+};
 
 const { data, pending } = useAsyncData(async () => {
   const ethers = await useEthersProvider();
@@ -39,12 +49,8 @@ const { data, pending } = useAsyncData(async () => {
   const fundContract = new Contract(address, fundABI, ethers.provider);
 
   return {
-    fundRaisingClose: new Date(Number(await fundContract.fundRaisingClose()) * 1000),
-    fundClose: new Date(Number(await fundContract.fundClose()) * 1000),
     investments: await fundContract.getInvestments(),
     assetValues: await fundContract.getAssetValues(),
-    owner: await fundContract.owner(),
-    walletAddress: await useCurrentAddress(),
   };
 }, {server: false});
 

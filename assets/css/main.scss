@@ -7,6 +7,7 @@
   --primary-color: #000000;
   --secondary-color: #868686;
   --inverted-primary-color: #ffffff;
+  --inverted-secondary-color: #DCDCDC;
 
   --border-radius: 3px;
 
@@ -31,6 +32,11 @@ h1 {
 }
 
 h2 {
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+
+h3 {
   font-size: 1.25rem;
   font-weight: 500;
 }
