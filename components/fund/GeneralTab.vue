@@ -86,7 +86,7 @@ const payout = async () => {
 
     & > button {
       display: flex;
-      padding: 3px var(--small-spacing);
+      padding: var(--small-spacing);
       justify-content: center;
       align-items: center;
       gap: var(--small-spacing);

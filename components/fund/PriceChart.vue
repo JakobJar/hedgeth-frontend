@@ -6,7 +6,7 @@
         {{ timeframe.label }}
       </button>
     </div>
-    <Line v-if="!pending && data" :data="data.chartData" :options="chartOptions"/>
+    <Line :data="data?.chartData || {labels: [], datasets: []}" :options="chartOptions"/>
   </div>
 </template>
 
