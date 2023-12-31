@@ -1,18 +1,21 @@
 <template>
   <form id="meta-form">
-    <div class="form-input">
-      <label for="name">Name</label>
-      <InputText v-model="metaForm.name" id="name" />
+    <h3>Change Metadata</h3>
+    <div class="input-wrapper">
+      <input v-model="metaForm.name"/>
     </div>
-    <div class="form-input">
-      <label for="description">Description</label>
-      <Textarea v-model="metaForm.description" />
+    <div class="input-wrapper textarea-wrapper">
+      <textarea v-model="metaForm.description" rez/>
     </div>
-    <Button label="Submit" @click="changeMeta"/>
+    <button class="meta-button" @click="changeMeta">Submit</button>
   </form>
 </template>
 
 <script setup lang="ts">
+const props = defineProps<{
+  address: string
+}>();
+
 const metaForm = reactive({
   name: '',
   description: ''
@@ -37,14 +40,45 @@ const changeMeta = async () => {
 </script>
 
 <style scoped lang="scss">
-form {
+#meta-form {
   display: flex;
+  width: 100%;
   flex-direction: column;
-  gap: 8px;
+  gap: 16px;
 }
 
-.form-input {
+.textarea-wrapper {
+  height: 100%;
+  padding: var(--small-spacing);
+
+  textarea {
+    border: none;
+    width: 100%;
+    height: 62px;
+    resize: vertical;
+
+    font-size: 0.9rem;
+    font-family: "Inter", sans-serif;
+
+    &:focus {
+      outline: none;
+    }
+  }
+}
+
+.meta-button {
   display: flex;
-  flex-direction: column;
+  height: 40px;
+  justify-content: center;
+  align-items: center;
+  gap: var(--small-spacing);
+  align-self: stretch;
+
+  border-radius: var(--border-radius);
+  border: 1px solid var(--primary-color);
+
+  &:hover {
+    background: var(--background-hover);
+  }
 }
 </style>

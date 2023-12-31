@@ -1,6 +1,7 @@
 <template>
   <div class="manage-tab">
     <SwapForm :address="props.address"/>
+    <MetaForm :address="props.address"/>
   </div>
 </template>
 
