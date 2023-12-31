@@ -7,9 +7,9 @@
           <h1>$2,011.11</h1>
         </div>
         <div class="fund-menu">
-          <button :class="{selected: currentTab === 'assets'}" @click="switchTab('assets')">Assets</button>
-          <button :class="{selected: currentTab === 'investors'}" @click="switchTab('investors')">Investors</button>
-          <button :class="{selected: currentTab === 'manage'}" @click="switchTab('manage')">Manage</button>
+          <button v-if="connectedWallet" :class="{selected: currentTab === 'assets'}" @click="switchTab('assets')">Assets</button>
+          <button v-if="connectedWallet" :class="{selected: currentTab === 'investors'}" @click="switchTab('investors')">Investors</button>
+          <button v-if="connectedWallet && metadata?.manager === connectedWallet" :class="{selected: currentTab === 'manage'}" @click="switchTab('manage')">Manage</button>
         </div>
       </header>
       <GeneralTab v-if="currentTab === 'general'" :address="address"/>
@@ -36,6 +36,11 @@ const route = useRoute();
 const address = Array.isArray(route.params.address) ? route.params.address[0] : route.params.address;
 
 const currentTab = ref('general');
+const connectedWallet = ref<string | undefined>(undefined);
+
+onMounted(async () => {
+  connectedWallet.value = await useCurrentAddress();
+});
 
 const switchTab = (tab: string) => {
   if (tab === currentTab.value) {

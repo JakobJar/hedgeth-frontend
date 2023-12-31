@@ -2,10 +2,10 @@
   <form id="meta-form">
     <h3>Change Metadata</h3>
     <div class="input-wrapper">
-      <input v-model="metaForm.name"/>
+      <input v-model="metaForm.name" placeholder="Fund Name"/>
     </div>
     <div class="input-wrapper textarea-wrapper">
-      <textarea v-model="metaForm.description" rez/>
+      <textarea v-model="metaForm.description" placeholder="Fund Description"/>
     </div>
     <button class="meta-button" @click="changeMeta">Submit</button>
   </form>

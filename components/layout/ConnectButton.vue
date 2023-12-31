@@ -42,4 +42,10 @@ const connectWallet = async () => {
     background-color: var(--primary-color);
   }
 }
+
+.user-avatar {
+  height: 32px;
+  width: 32px;
+  border-radius: 50%;
+}
 </style>
