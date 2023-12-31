@@ -31,7 +31,7 @@ const props = defineProps<{
 const invest = async () => {
   const signer = await useEthersSigner();
 
-  const fundABI: [] = await $fetch('/abi/fund.json');
+  const fundABI: [] = await $fetch('/abi/ifund.json');
   const ierc20ABI: [] = await $fetch('/abi/ierc20.json');
 
   const fundContract = new Contract(props.address, fundABI, signer);
@@ -45,7 +45,7 @@ const invest = async () => {
 const payout = async () => {
   const signer = await useEthersSigner();
 
-  const fundABI: [] = await $fetch('/abi/fund.json');
+  const fundABI: [] = await $fetch('/abi/ifund.json');
 
   const fundContract = new Contract(props.address, fundABI, signer);
   await fundContract.getFunction('payout').send();

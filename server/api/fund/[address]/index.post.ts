@@ -21,7 +21,7 @@ export default defineEventHandler(async (event) => {
             statusMessage: "No name or signedMessage provided"
         });
 
-    const fundABI: string = JSON.parse(fs.readFileSync("public/abi/fund.json", "utf8"));
+    const fundABI: string = JSON.parse(fs.readFileSync("public/abi/ifund.json", "utf8"));
     const contract = new Contract(address, fundABI, ethersProvider);
 
     const signer = ethers.verifyMessage(address, body.signedMessage);

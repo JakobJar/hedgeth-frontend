@@ -66,7 +66,7 @@ const createFund = async () => {
   const router = useRouter();
   const signer = await useEthersSigner();
 
-  const fundABI: [] = await $fetch('/abi/factory.json');
+  const fundABI: [] = await $fetch('/abi/ifactory.json');
 
   const fundFactoryContract = new Contract(runtimeConfig.public.fundFactoryAddress, fundABI, signer);
 

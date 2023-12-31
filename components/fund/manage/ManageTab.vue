@@ -1,9 +1,7 @@
 <template>
-  <h1>Manage</h1>
-  <h3>Swap Assets</h3>
-  <SwapForm :address="props.address" />
-  <h3>Change meta</h3>
-  <MetaForm/>
+  <div class="manage-tab">
+    <SwapForm :address="props.address"/>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -14,3 +12,12 @@ const props = defineProps<{
   address: string
 }>();
 </script>
+
+<style scoped lang="scss">
+.manage-tab {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--large-spacing);
+  align-self: stretch;
+}
+</style>

@@ -26,11 +26,13 @@
         </tbody>
       </table>
     </main>
+    <Modal></Modal>
   </NuxtLayout>
 </template>
 
 <script setup lang="ts">
 import SearchBar from "~/components/home/SearchBar.vue";
+import Modal from "~/components/common/Modal.vue";
 
 const router = useRouter();
 

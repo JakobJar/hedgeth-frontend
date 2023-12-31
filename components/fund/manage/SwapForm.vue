@@ -1,58 +1,120 @@
 <template>
-  <form>
-    <div class="form-input">
-      <label for="from">From</label>
-      <InputText v-model="swapForm.from" id="from"/>
+  <form id="swap-form">
+    <h3>Swap Assets</h3>
+    <div class="input-wrapper swap-input-wrapper">
+      <input v-model="swapForm.amount" placeholder="Amount in" type="number" step="any" required />
+      <button type="button" @click="swapForm.showFromTokenModal = true">{{ swapTokens?.fromToken.symbol || 'None' }}</button>
     </div>
-    <div class="form-input">
-      <label for="to">To</label>
-      <InputText v-model="swapForm.to" id="to"/>
+    <div class="input-wrapper swap-input-wrapper">
+      <input v-model="swapForm.minimumAmountOut" placeholder="Minimum amount out" type="number" step="any" />
+      <button type="button" @click="swapForm.showToTokenModal = true">{{ swapTokens?.toToken.symbol || 'None' }}</button>
     </div>
-    <div class="form-input">
-      <label for="amount">Amount</label>
-      <InputNumber v-model="swapForm.amount" id="amount"/>
+    <div class="costs">
+
     </div>
-    <Button label="Swap" @click="swap" />
+    <button class="swap-button" type="button" @click="swap">Swap</button>
   </form>
+  <Modal v-if="swapForm.showFromTokenModal">
+    <div class="modal-content">
+      <label>Provide the address of the input token</label>
+      <div class="input-wrapper modal-input-wrapper">
+        <input v-model="swapForm.fromToken" placeholder="Input Token Address" type="text" required />
+      </div>
+      <button class="swap-button" type="button" @click="closeModal">Close</button>
+    </div>
+  </Modal>
+  <Modal v-if="swapForm.showToTokenModal">
+    <div class="modal-content">
+      <label>Provide the address of the output token</label>
+      <div class="input-wrapper modal-input-wrapper">
+        <input v-model="swapForm.toToken" placeholder="Output Token Address" type="text" required />
+      </div>
+      <button class="swap-button" type="button" @click="closeModal">Close</button>
+    </div>
+  </Modal>
 </template>
 
 <script setup lang="ts">
 import {Contract, ethers} from "ethers";
+import Modal from "~/components/common/Modal.vue";
 
 const props = defineProps<{
   address: string
 }>();
-
 const runtimeConfig = useRuntimeConfig();
 
 const swapForm = reactive({
   from: '',
+  fromToken: runtimeConfig.public.usdcAddress,
   to: '',
-  amount: 0,
+  toToken: '',
+  amount: undefined,
+  minimumAmountOut: undefined,
+  showFromTokenModal: false,
+  showToTokenModal: false,
 });
 
-const swap = async () => {
+const { data: swapTokens, refresh: refreshSwapTokens } = useAsyncData(async () => {
+  const provider = await useEthersProvider();
+  const ierc20Metadata: [] = await $fetch('/abi/ierc20metadata.json');
+
+  let fromSymbol = undefined;
+  try {
+    const fromTokenContract = new Contract(swapForm.fromToken, ierc20Metadata, provider);
+    fromSymbol = await fromTokenContract.symbol();
+  } catch (e) {
+    console.debug(e);
+  }
+
+  let toSymbol = undefined;
+  try {
+    const toTokenContract = new Contract(swapForm.toToken, ierc20Metadata, provider);
+    toSymbol = await toTokenContract.symbol();
+  } catch (e) {
+    console.debug(e);
+  }
+  return {
+    fromToken: {symbol: fromSymbol},
+    toToken: {symbol: toSymbol}
+  };
+});
+
+const closeModal = () => {
+  swapForm.showFromTokenModal = false;
+  swapForm.showToTokenModal = false;
+  refreshSwapTokens();
+};
+
+const getAmounts = async () => {
   const signer = await useEthersSigner();
 
-  const fundABI: [] = await $fetch('/abi/fund.json');
+  const ierc20Metadata: [] = await $fetch('/abi/ierc20metadata.json');
 
-  // TODO: load decimals
-  const amountIn = BigInt(swapForm.amount) * 10n ** 18n;
-  const minAmountOut = 0n;
+  const fromTokenContract = new Contract(swapForm.fromToken, ierc20Metadata, signer);
+  const toTokenContract = new Contract(swapForm.toToken, ierc20Metadata, signer);
+
+  const fromTokenDecimals = await fromTokenContract.decimals();
+  const toTokenDecimals = await toTokenContract.decimals();
+
+  const amountIn = BigInt(swapForm.amount!) * 10n ** fromTokenDecimals;
+  const minAmountOut = BigInt(swapForm.minimumAmountOut || 0) * 10n ** toTokenDecimals;
+  return {amountIn, minAmountOut, fromTokenDecimals, toTokenDecimals};
+}
+
+const loadRoute = async (amountIn: BigInt, fromTokenDecimals: BigInt, toTokenDecimals: BigInt) => {
   const routerRequestBody = {
     "amount": amountIn,
     "tradeType": 0,
     "currencyAmount": {
       "address": swapForm.from,
-      "decimals": 18,
+      "decimals": fromTokenDecimals,
     },
     "currency": {
       "address": swapForm.to,
-      "decimals": 18,
+      "decimals": toTokenDecimals,
     }
   }
-
-  const routerResult: any = await $fetch(runtimeConfig.public.smartRouterUrl + '/route', {
+  return await $fetch(runtimeConfig.public.smartRouterUrl + '/route', {
     method: 'POST',
     body: JSON.stringify(routerRequestBody, (key, value) =>
         typeof value === 'bigint'
@@ -63,6 +125,17 @@ const swap = async () => {
       'Content-Type': 'application/json'
     }
   });
+}
+
+const swap = async () => {
+  if (!swapForm.fromToken || !swapForm.toToken)
+    return;
+  const signer = await useEthersSigner();
+
+  const fundABI: [] = await $fetch('/abi/ifund.json');
+
+  const {amountIn, minAmountOut, fromTokenDecimals, toTokenDecimals} = (await getAmounts())!;
+  const routerResult: any = await loadRoute(amountIn, fromTokenDecimals, toTokenDecimals);
 
   const route = routerResult.route[0];
   const encodeTypes: string[] = [];
@@ -84,14 +157,63 @@ const swap = async () => {
 </script>
 
 <style scoped lang="scss">
-form {
+#swap-form {
   display: flex;
+  width: 100%;
   flex-direction: column;
-  gap: 8px;
+  align-items: flex-start;
+  gap: var(--medium-spacing);
 }
 
-.form-input {
+.swap-button {
+  display: flex;
+  height: 40px;
+  justify-content: center;
+  align-items: center;
+  gap: var(--small-spacing);
+  align-self: stretch;
+
+  border-radius: var(--border-radius);
+  border: 1px solid var(--primary-color);
+
+  &:hover {
+    background: var(--background-hover);
+  }
+}
+
+.swap-input-wrapper {
+  justify-content: space-between;
+  gap: var(--small-spacing);
+
+  & > input {
+    font-size: 0.9rem;
+  }
+
+  button {
+    display: flex;
+    height: 25px;
+    padding: 0 var(--small-spacing);
+    align-items: center;
+
+    border: 1px solid var(--primary-color);
+    border-radius: var(--border-radius);
+    font-weight: 400;
+    font-size: 0.8rem;
+
+    &:hover {
+      color: var(--inverted-primary-color);
+      background: var(--primary-color);
+    }
+  }
+}
+
+.modal-content {
   display: flex;
   flex-direction: column;
+  gap: var(--small-spacing);
+}
+
+.modal-input-wrapper {
+  width: 500px;
 }
 </style>

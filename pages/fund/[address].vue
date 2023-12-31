@@ -7,13 +7,15 @@
           <h1>$2,011.11</h1>
         </div>
         <div class="fund-menu">
-          <span :class="{selected: currentTab === 'assets'}" @click="switchTab('assets')">Assets</span>
-          <span :class="{selected: currentTab === 'investors'}" @click="switchTab('investors')">Investors</span>
+          <button :class="{selected: currentTab === 'assets'}" @click="switchTab('assets')">Assets</button>
+          <button :class="{selected: currentTab === 'investors'}" @click="switchTab('investors')">Investors</button>
+          <button :class="{selected: currentTab === 'manage'}" @click="switchTab('manage')">Manage</button>
         </div>
       </header>
       <GeneralTab v-if="currentTab === 'general'" :address="address"/>
       <AssetsTab v-if="currentTab === 'assets'" :assetValues="data?.assetValues"/>
       <InvestorsTab v-if="currentTab === 'investors'" :investments="data?.investments"/>
+      <ManageTab v-if="currentTab === 'manage'" :address="address"/>
     </main>
     <section id="transaction-sidebar">
       <h3>Recent Transaction</h3>
@@ -28,6 +30,7 @@ import GeneralTab from "~/components/fund/GeneralTab.vue";
 import AssetsTab from "~/components/fund/AssetsTab.vue";
 import InvestorsTab from "~/components/fund/InvestorsTab.vue";
 import PriceChart from "~/components/fund/PriceChart.vue";
+import MetaForm from "~/components/fund/manage/MetaForm.vue";
 
 const route = useRoute();
 const address = Array.isArray(route.params.address) ? route.params.address[0] : route.params.address;
@@ -45,7 +48,7 @@ const switchTab = (tab: string) => {
 const { data, pending } = useAsyncData(async () => {
   const ethers = await useEthersProvider();
 
-  const fundABI: [] = await $fetch('/abi/fund.json');
+  const fundABI: [] = await $fetch('/abi/ifund.json');
 
   const fundContract = new Contract(address, fundABI, ethers.provider);
 
@@ -87,7 +90,7 @@ header {
   align-items: center;
   gap: var(--medium-spacing);
 
-  & > span {
+  & > button {
     font-size: 0.9rem;
     color: var(--secondary-color);
     padding: var(--small-spacing);
