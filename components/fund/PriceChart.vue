@@ -86,9 +86,9 @@ const {data, pending, error} = useAsyncData(async () => {
 
   return {
     chartData: {
-      labels: data.map((item: any) => new Date(item._time).toLocaleString()),
+      labels: data.map((item: any) => new Date(item.time).toLocaleString()),
       datasets: [{
-        data: data.map((item: any) => Math.random() * 1000),
+        data: data.map((item: any) => item.value),
         borderColor: '#000000',
         backgroundColor: '#000000',
         borderWidth: 2,

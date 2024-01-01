@@ -40,6 +40,7 @@ export default defineEventHandler(async (event) => {
         '  |> filter(fn: (r) => r["_measurement"] == "fund_value")\n' +
         `  |> filter(fn: (r) => r["fund_address"] == "${address}")\n` +
         `  |> aggregateWindow(every: ${interval}, fn: last, createEmpty: false)\n` +
+        '  |> map(fn: (r) => {time: r["_time], value: r["_value"]})' +
         '  |> yield(name: "last")';
 
     return await influxQuery.collectRows(query);

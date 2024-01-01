@@ -8,7 +8,7 @@
         <tr>
           <th>Name</th>
           <th>Performance</th>
-          <th><abbr title="Assets under Management">AUM</abbr></th>
+          <th>Current Value</th>
           <th>Manager</th>
           <th>Fundraising Close</th>
           <th>Fund Close</th>
@@ -18,7 +18,7 @@
         <tr v-for="fund in data" :key="fund.address" @click="clickFund(fund.address)" class="selectable">
           <td>{{ fund.name }}</td>
           <td>TODO</td>
-          <td>TODO</td>
+          <td>${{ fund.value.toLocaleString() }}</td>
           <td>{{ fund.manager }}</td>
           <td>{{ new Date(fund.raisingClose!).toLocaleString() }}</td>
           <td>{{ new Date(fund.close!).toLocaleString() }}</td>
@@ -26,7 +26,6 @@
         </tbody>
       </table>
     </main>
-    <Modal></Modal>
   </NuxtLayout>
 </template>
 
