@@ -1,5 +1,10 @@
 import {QueryApi} from "@influxdata/influxdb-client";
 
+interface Response {
+    time: string;
+    value: number;
+}
+
 const getIntervalInterval = (range: any): string | undefined => {
     if (typeof range !== "string")
         return undefined;
@@ -43,5 +48,5 @@ export default defineEventHandler(async (event) => {
         '  |> map(fn: (r) => ({time: r["_time"], value: r["_value"]}))\n' +
         '  |> yield(name: "last")';
 
-    return await influxQuery.collectRows(query);
+    return await influxQuery.collectRows(query) as Response[];
 });

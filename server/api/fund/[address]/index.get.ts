@@ -1,5 +1,9 @@
-import {PrismaClient} from "@prisma/client";
+import {Fund, PrismaClient} from "@prisma/client";
 import {QueryApi} from "@influxdata/influxdb-client";
+
+interface Response extends Fund {
+    value?: number;
+}
 
 export default defineEventHandler(async (event) => {
     const prismaClient: PrismaClient = event.context.prisma;
@@ -12,11 +16,17 @@ export default defineEventHandler(async (event) => {
             statusMessage: "No address provided"
         });
 
-    const fund: any = await prismaClient.fund.findUnique({
+    const fund: Response | null = await prismaClient.fund.findUnique({
         where: {
             address: address,
         }
     });
+
+    if (!fund)
+        throw createError({
+            status: 404,
+            statusMessage: "Fund not found"
+        });
 
     const fundValueQuery = `from(bucket: "fund-data")
               |> range(start: 0)

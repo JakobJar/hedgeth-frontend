@@ -1,5 +1,14 @@
-import {PrismaClient} from "@prisma/client";
+import {Fund, PrismaClient} from "@prisma/client";
 import {QueryApi} from "@influxdata/influxdb-client";
+
+interface Response {
+    address: string;
+    name: string;
+    manager: string;
+    raisingClose: Date | null;
+    close: Date | null;
+    value?: number;
+}
 
 export default defineEventHandler(async (event) => {
     const prismaClient: PrismaClient = event.context.prisma;
@@ -14,7 +23,7 @@ export default defineEventHandler(async (event) => {
         });
     const skip = typeof query.skip == "number" ? query.skip : 0;
 
-    const funds: any[] = await prismaClient.fund.findMany({skip: skip, take: take,
+    const funds: Response[] = await prismaClient.fund.findMany({skip: skip, take: take,
         select: {address: true, name: true, manager: true, raisingClose: true, close: true}});
 
     const addresses = funds.map(fund => fund.address);
@@ -33,5 +42,5 @@ export default defineEventHandler(async (event) => {
     for (const fundValue of fundValues) {
         fundMap[fundValue.address].value = fundValue.value;
     }
-    return Object.values(fundMap);
+    return Object.values(fundMap) as Response[];
 });
