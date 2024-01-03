@@ -4,17 +4,18 @@
       <header>
         <div class="value">
           <span>Total Fund Value</span>
-          <h1>$2,011.11</h1>
+          <h1>{{ backendData?.value.toLocaleString(undefined, { style: 'currency', currency: 'USD' }) || 'N/A' }}</h1>
         </div>
         <div class="fund-menu">
           <button v-if="connectedWallet" :class="{selected: currentTab === 'assets'}" @click="switchTab('assets')">Assets</button>
           <button v-if="connectedWallet" :class="{selected: currentTab === 'investors'}" @click="switchTab('investors')">Investors</button>
-          <button v-if="connectedWallet && metadata?.manager === connectedWallet" :class="{selected: currentTab === 'manage'}" @click="switchTab('manage')">Manage</button>
+          <button v-if="connectedWallet && backendData?.manager === connectedWallet" :class="{selected: currentTab === 'manage'}" @click="switchTab('manage')">Manage</button>
         </div>
       </header>
-      <GeneralTab v-if="currentTab === 'general'" :address="address"/>
-      <AssetsTab v-if="currentTab === 'assets'" :assetValues="data?.assetValues"/>
-      <InvestorsTab v-if="currentTab === 'investors'" :investments="data?.investments"/>
+      <GeneralTab v-if="currentTab === 'general'" :address="address" :title="backendData?.name"
+                  :investment="blockchainData?.ownInvestment" :aum="blockchainData?.aum"/>
+      <AssetsTab v-if="currentTab === 'assets'" :assetValues="blockchainData?.assetValues"/>
+      <InvestorsTab v-if="currentTab === 'investors'" :investments="blockchainData?.investments"/>
       <ManageTab v-if="currentTab === 'manage'" :address="address"/>
     </main>
     <section id="transaction-sidebar">
@@ -50,20 +51,34 @@ const switchTab = (tab: string) => {
   currentTab.value = tab;
 };
 
-const { data, pending } = useAsyncData(async () => {
+const { data: blockchainData } = useAsyncData(async () => {
   const ethers = await useEthersProvider();
+  const currentAddress = await useCurrentAddress();
 
   const fundABI: [] = await $fetch('/abi/ifund.json');
 
   const fundContract = new Contract(address, fundABI, ethers.provider);
 
+  const investments: any[] = await fundContract.getInvestments();
+  console.log(investments);
+  let aum = 0n;
+  let ownInvestment: bigint | undefined = undefined;
+  for (const investment of investments) {
+    aum += investment.value;
+    if (investment.investor === currentAddress) {
+      ownInvestment = investment.amount;
+    }
+  }
+
   return {
-    investments: await fundContract.getInvestments(),
+    aum: aum,
+    ownInvestment: ownInvestment,
+    investments: investments,
     assetValues: await fundContract.getAssetValues(),
   };
 }, {server: false});
 
-const { data: metadata, pending: metadataPending } = useFetch(`/api/fund/${address}`);
+const { data: backendData } = useFetch(`/api/fund/${address}`);
 </script>
 
 <style scoped lang="scss">

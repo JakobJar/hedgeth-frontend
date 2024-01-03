@@ -14,7 +14,7 @@ export default defineEventHandler(async (event) => {
         });
     const skip = typeof query.skip == "number" ? query.skip : 0;
 
-    const funds = await prismaClient.fund.findMany({skip: skip, take: take,
+    const funds: any[] = await prismaClient.fund.findMany({skip: skip, take: take,
         select: {address: true, name: true, manager: true, raisingClose: true, close: true}});
 
     const addresses = funds.map(fund => fund.address);
@@ -29,7 +29,7 @@ export default defineEventHandler(async (event) => {
               |> last()
               |> map(fn: (r) => ({address: r["fund_address"], value: r["_value"]}))
               |> yield(name: "last")`;
-    const fundValues = await influxQuery.collectRows(fundValueQuery);
+    const fundValues: any[] = await influxQuery.collectRows(fundValueQuery);
     for (const fundValue of fundValues) {
         fundMap[fundValue.address].value = fundValue.value;
     }

@@ -10,7 +10,7 @@
     <tbody>
     <tr v-for="investment in props.investments" :key="investment.investor">
       <td>{{ investment.investor }}</td>
-      <td>{{ investment.value / (10n ** 18n) }}</td>
+      <td>{{ (investment.value / (10n ** 18n)).toLocaleString(undefined, { style: 'currency', currency: 'USD' }) }}</td>
     </tr>
     </tbody>
   </table>
@@ -18,11 +18,13 @@
 
 <script setup lang="ts">
 const props = defineProps<{
-  investments: {
+  investments?: {
     investor: string,
     value: bigint,
   }[]
 }>();
+
+console.log(props.investments)
 </script>
 
 <style scoped>

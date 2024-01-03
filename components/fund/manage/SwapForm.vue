@@ -77,7 +77,7 @@ const { data: swapTokens, refresh: refreshSwapTokens } = useAsyncData(async () =
     fromToken: {symbol: fromSymbol},
     toToken: {symbol: toSymbol}
   };
-});
+}, {server: false});
 
 const closeModal = () => {
   swapForm.showFromTokenModal = false;

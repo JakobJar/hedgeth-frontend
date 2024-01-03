@@ -1,9 +1,9 @@
 <template xmlns="http://www.w3.org/1999/html">
-  <PriceChart address="0x52cb9a25c0edf8b25127f09369320e3bfd475589" />
+  <PriceChart :address="address" />
   <section id="investing">
     <div class="investment-value">
       <span>Your Investment</span>
-      <h2>$0.00</h2>
+      <h2>{{(props.investment ? props.investment / 10n ** 18n : 0n).toLocaleString(undefined, { style: 'currency', currency: 'USD' })}}</h2>
     </div>
     <div class="investment-actions">
       <button @click="invest">Invest</button>
@@ -12,7 +12,7 @@
   </section>
   <section id="metadata">
     <div class="fund-title">
-      <h2>{{ props.title ?? 'Loading...' }}</h2>
+      <h2>{{ props.title }}</h2>
       <span>{{ props.address }}</span>
     </div>
   </section>
@@ -21,11 +21,14 @@
 <script setup lang="ts">
 import {Contract} from "ethers";
 import PriceChart from "~/components/fund/PriceChart.vue";
+import {options} from "kolorist";
 
 const runtimeConfig = useRuntimeConfig();
 const props = defineProps<{
   address: string,
   title?: string,
+  investment?: bigint,
+  aum?: bigint,
 }>();
 
 const invest = async () => {
