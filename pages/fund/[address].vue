@@ -65,8 +65,8 @@ const { data: blockchainData } = useAsyncData(async () => {
   let ownInvestment: bigint | undefined = undefined;
   for (const investment of investments) {
     aum += investment.value;
-    if (investment.investor === currentAddress) {
-      ownInvestment = investment.amount;
+    if (investment.investor.toLowerCase() === currentAddress) {
+      ownInvestment = investment.value;
     }
   }
 
