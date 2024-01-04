@@ -6,7 +6,7 @@
       <h2>{{(props.investment ? props.investment / 10n ** 18n : 0n).toLocaleString(undefined, { style: 'currency', currency: 'USD' })}}</h2>
     </div>
     <div class="investment-actions">
-      <button @click="invest">Invest</button>
+      <button @click="investForm.showModal = true">Invest</button>
       <button @click="payout">Payout</button>
     </div>
   </section>
@@ -16,12 +16,22 @@
       <span>{{ props.address }}</span>
     </div>
   </section>
+
+  <Modal v-if="investForm.showModal">
+    <div class="invest-modal-content">
+      <p>Provide the amount of USDC you want to invest into the fund.</p>
+      <div class="input-wrapper">
+        <input v-model="investForm.amount" type="number" step="0.01" placeholder="Amount in USD" />
+      </div>
+      <button class="form-button" type="button" @click="invest">Invest</button>
+    </div>
+  </Modal>
 </template>
 
 <script setup lang="ts">
 import {Contract} from "ethers";
 import PriceChart from "~/components/fund/PriceChart.vue";
-import {options} from "kolorist";
+import Modal from "~/components/common/Modal.vue";
 
 const runtimeConfig = useRuntimeConfig();
 const props = defineProps<{
@@ -30,6 +40,11 @@ const props = defineProps<{
   investment?: bigint,
   aum?: bigint,
 }>();
+
+const investForm = reactive({
+  showModal: false,
+  amount: 0.0,
+})
 
 const invest = async () => {
   const signer = await useEthersSigner();
@@ -40,9 +55,10 @@ const invest = async () => {
   const fundContract = new Contract(props.address, fundABI, signer);
   const usdcContract = new Contract(runtimeConfig.public.usdcAddress, ierc20ABI, signer);
 
-  const usdcTran = await usdcContract.getFunction('approve').send(props.address, 10n ** 19n);
+  const amount = BigInt(investForm.amount * 10 ** 18);
+  const usdcTran = await usdcContract.getFunction('approve').send(props.address, amount);
   await usdcTran.wait();
-  await fundContract.getFunction('invest').send(10n ** 19n);
+  await fundContract.getFunction('invest').send(amount);
 };
 
 const payout = async () => {
@@ -121,5 +137,12 @@ const payout = async () => {
     justify-content: flex-end;
     align-items: flex-start;
   }
+}
+
+.invest-modal-content {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  gap: var(--medium-spacing);
 }
 </style>

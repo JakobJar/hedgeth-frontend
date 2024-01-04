@@ -94,8 +94,8 @@ const getAmounts = async () => {
   const fromTokenDecimals = await fromTokenContract.decimals();
   const toTokenDecimals = await toTokenContract.decimals();
 
-  const amountIn = BigInt(swapForm.amount!) * 10n ** fromTokenDecimals;
-  const minAmountOut = BigInt(swapForm.minimumAmountOut || 0) * 10n ** toTokenDecimals;
+  const amountIn = BigInt(swapForm.amount! * 10 ** fromTokenDecimals);
+  const minAmountOut = BigInt((swapForm.minimumAmountOut ?? 0) * 10 ** toTokenDecimals);
   return {amountIn, minAmountOut, fromTokenDecimals, toTokenDecimals};
 }
 
