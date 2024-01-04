@@ -7,7 +7,7 @@
     <div class="input-wrapper textarea-wrapper">
       <textarea v-model="metaForm.description" placeholder="Fund Description"/>
     </div>
-    <button class="meta-button" @click="changeMeta">Submit</button>
+    <button class="form-button" @click="changeMeta">Submit</button>
   </form>
 </template>
 
@@ -63,22 +63,6 @@ const changeMeta = async () => {
     &:focus {
       outline: none;
     }
-  }
-}
-
-.meta-button {
-  display: flex;
-  height: 40px;
-  justify-content: center;
-  align-items: center;
-  gap: var(--small-spacing);
-  align-self: stretch;
-
-  border-radius: var(--border-radius);
-  border: 1px solid var(--primary-color);
-
-  &:hover {
-    background: var(--background-hover);
   }
 }
 </style>

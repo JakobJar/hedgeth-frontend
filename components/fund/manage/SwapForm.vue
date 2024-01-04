@@ -3,16 +3,14 @@
     <h3>Swap Assets</h3>
     <div class="input-wrapper swap-input-wrapper">
       <input v-model="swapForm.amount" placeholder="Amount in" type="number" step="any" required />
-      <button type="button" @click="swapForm.showFromTokenModal = true">{{ swapTokens?.fromToken.symbol || 'None' }}</button>
+      <button type="button" class="form-button" @click="swapForm.showFromTokenModal = true">{{ swapTokens?.fromToken.symbol || 'None' }}</button>
     </div>
     <div class="input-wrapper swap-input-wrapper">
       <input v-model="swapForm.minimumAmountOut" placeholder="Minimum amount out" type="number" step="any" />
-      <button type="button" @click="swapForm.showToTokenModal = true">{{ swapTokens?.toToken.symbol || 'None' }}</button>
+      <button type="button" class="form-button" @click="swapForm.showToTokenModal = true">{{ swapTokens?.toToken.symbol || 'None' }}</button>
     </div>
-    <div class="costs">
-
-    </div>
-    <button class="swap-button" type="button" @click="swap">Swap</button>
+    <!-- TODO: preview costs -->
+    <button class="form-button" type="button" @click="swap">Swap</button>
   </form>
   <Modal v-if="swapForm.showFromTokenModal">
     <div class="modal-content">
@@ -20,7 +18,7 @@
       <div class="input-wrapper modal-input-wrapper">
         <input v-model="swapForm.fromToken" placeholder="Input Token Address" type="text" required />
       </div>
-      <button class="swap-button" type="button" @click="closeModal">Close</button>
+      <button class="form-button" type="button" @click="closeModal">Close</button>
     </div>
   </Modal>
   <Modal v-if="swapForm.showToTokenModal">
@@ -29,7 +27,7 @@
       <div class="input-wrapper modal-input-wrapper">
         <input v-model="swapForm.toToken" placeholder="Output Token Address" type="text" required />
       </div>
-      <button class="swap-button" type="button" @click="closeModal">Close</button>
+      <button class="form-button" type="button" @click="closeModal">Close</button>
     </div>
   </Modal>
 </template>
@@ -165,22 +163,6 @@ const swap = async () => {
   gap: var(--medium-spacing);
 }
 
-.swap-button {
-  display: flex;
-  height: 40px;
-  justify-content: center;
-  align-items: center;
-  gap: var(--small-spacing);
-  align-self: stretch;
-
-  border-radius: var(--border-radius);
-  border: 1px solid var(--primary-color);
-
-  &:hover {
-    background: var(--background-hover);
-  }
-}
-
 .swap-input-wrapper {
   justify-content: space-between;
   gap: var(--small-spacing);
@@ -190,20 +172,12 @@ const swap = async () => {
   }
 
   button {
-    display: flex;
     height: 25px;
+    width: auto;
     padding: 0 var(--small-spacing);
-    align-items: center;
 
-    border: 1px solid var(--primary-color);
-    border-radius: var(--border-radius);
     font-weight: 400;
     font-size: 0.8rem;
-
-    &:hover {
-      color: var(--inverted-primary-color);
-      background: var(--primary-color);
-    }
   }
 }
 
