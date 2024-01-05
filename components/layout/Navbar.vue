@@ -2,10 +2,9 @@
   <nav>
     <div class="logo-placeholder"></div>
     <div class="menu">
-      <button class="menu-item selected">Home</button>
-      <button class="menu-item">My Investments</button>
-      <button class="menu-item">My Funds</button>
-      <button class="menu-item">FAQ</button>
+      <NuxtLink v-for="item in menuItems" :key="item.name" :to="item.link" class="menu-item" :class="{selected: route.fullPath === item.link}">
+        {{ item.name }}
+      </NuxtLink>
     </div>
     <ConnectButton />
   </nav>
@@ -13,6 +12,28 @@
 
 <script setup lang="ts">
 import ConnectButton from "~/components/layout/ConnectButton.vue";
+
+const menuItems = [
+  {
+    name: 'Home',
+    link: '/',
+  },
+  {
+    name: 'My Investments',
+    link: '/investments',
+  },
+  {
+    name: 'My Funds',
+    link: '/funds',
+  },
+  {
+    name: 'FAQ',
+    link: '/faq',
+  },
+];
+
+const route = useRoute();
+console.log(route.fullPath);
 </script>
 
 <style scoped lang="scss">
@@ -45,6 +66,8 @@ nav {
     gap: var(--small-spacing);
     align-self: stretch;
     border-radius: var(--border-radius);
+    color: var(--primary-color);
+    text-decoration: none;
 
     &:hover {
       background: var(--background-hover);

@@ -15,14 +15,14 @@
         </tr>
         </thead>
         <tbody>
-        <tr v-for="fund in data" :key="fund.address" @click="clickFund(fund.address)" class="selectable">
-          <td>{{ fund.name }}</td>
-          <td>TODO</td>
-          <td>${{ fund.value.toLocaleString() }}</td>
-          <td>{{ fund.manager }}</td>
-          <td>{{ new Date(fund.raisingClose!).toLocaleString() }}</td>
-          <td>{{ new Date(fund.close!).toLocaleString() }}</td>
-        </tr>
+          <tr v-for="fund in data" :key="fund.address" @click="clickFund(fund.address)" class="selectable">
+            <td>{{ fund.name }}</td>
+            <td>TODO</td>
+            <td>${{ fund.value.toLocaleString() }}</td>
+            <td>{{ fund.manager }}</td>
+            <td>{{ new Date(fund.raisingClose!).toLocaleString() }}</td>
+            <td>{{ new Date(fund.close!).toLocaleString() }}</td>
+          </tr>
         </tbody>
       </table>
     </main>
