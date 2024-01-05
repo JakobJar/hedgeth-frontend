@@ -33,7 +33,6 @@ const menuItems = [
 ];
 
 const route = useRoute();
-console.log(route.fullPath);
 </script>
 
 <style scoped lang="scss">

@@ -60,7 +60,6 @@ const { data: blockchainData } = useAsyncData(async () => {
   const fundContract = new Contract(address, fundABI, ethers.provider);
 
   const investments: any[] = await fundContract.getInvestments();
-  console.log(investments);
   let aum = 0n;
   let ownInvestment: bigint | undefined = undefined;
   for (const investment of investments) {
