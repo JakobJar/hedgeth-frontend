@@ -167,10 +167,6 @@ const swap = async () => {
   justify-content: space-between;
   gap: var(--small-spacing);
 
-  & > input {
-    font-size: 0.9rem;
-  }
-
   button {
     height: 25px;
     width: auto;

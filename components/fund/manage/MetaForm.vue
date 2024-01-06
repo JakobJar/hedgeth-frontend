@@ -57,7 +57,6 @@ const changeMeta = async () => {
     height: 62px;
     resize: vertical;
 
-    font-size: 0.9rem;
     font-family: "Inter", sans-serif;
 
     &:focus {
