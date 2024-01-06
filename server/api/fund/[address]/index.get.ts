@@ -37,6 +37,7 @@ export default defineEventHandler(async (event) => {
               |> map(fn: (r) => ({value: r["_value"]}))
               |> yield(name: "last")`;
     const fundValue: any = await influxQuery.collectRows(fundValueQuery);
-    fund.value = fundValue[0].value;
+    if (fundValue.length > 0)
+        fund.value = fundValue[0].value;
     return fund;
 });

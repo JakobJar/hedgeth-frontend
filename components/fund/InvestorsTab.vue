@@ -23,8 +23,6 @@ const props = defineProps<{
     value: bigint,
   }[]
 }>();
-
-console.log(props.investments)
 </script>
 
 <style scoped>

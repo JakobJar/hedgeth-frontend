@@ -86,17 +86,18 @@ const createFund = async () => {
   const parsedFundClose = new Date(formData.fundClose);
   const fundTransaction = await fundFactoryContract.getFunction('createFund').send(
       BigInt(formData.minimumInvestment) * 10n ** 18n,
-      formData.fee * 10 ** 2,
-      formData.performanceFee * 10 ** 2,
+      formData.fee * 1e2,
+      formData.performanceFee * 1e2,
       BigInt(Math.round(parsedFundRaisingClose.getTime() / 1000)),
       BigInt(Math.round(parsedFundClose.getTime() / 1000)),
   );
 
   const receipt = await fundTransaction.wait();
-  if (!receipt || receipt.logs.length < 3)
+  console.log(receipt);
+  if (!receipt || receipt.logs.length < 1)
     return;
 
-  const fundCreationEvent = receipt.logs[2];
+  const fundCreationEvent = receipt.logs[0];
   let fundAddress = fundCreationEvent.topics[1];
   fundAddress = "0x" + BigInt(fundAddress).toString(16);
 

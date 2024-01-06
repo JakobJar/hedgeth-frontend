@@ -9,6 +9,9 @@ const influxClient = new InfluxDB({
 });
 const influxQuery = influxClient.getQueryApi(process.env.INFLUXDB_ORG!);
 
+// @ts-ignore
+BigInt.prototype.toJSON = function() { return this.toString() }
+
 export default defineEventHandler((event) => {
     event.context.prisma = prismaClient;
     event.context.influx = influxQuery;

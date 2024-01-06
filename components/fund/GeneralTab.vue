@@ -3,7 +3,8 @@
   <section id="investing">
     <div class="investment-value">
       <span>Your Investment</span>
-      <h2>{{(props.investment ? props.investment / 10n ** 18n : 0n).toLocaleString(undefined, { style: 'currency', currency: 'USD' })}}</h2>
+      <h2>{{(props.blockchainData?.ownInvestment ? props.blockchainData.ownInvestment / 10n ** 18n : 0n)
+          .toLocaleString(undefined, { style: 'currency', currency: 'USD' })}}</h2>
     </div>
     <div class="investment-actions">
       <button @click="investForm.showModal = true">Invest</button>
@@ -12,8 +13,46 @@
   </section>
   <section id="metadata">
     <div class="fund-title">
-      <h2>{{ props.title }}</h2>
+      <h2>{{ props.backendData?.name }}</h2>
       <span>{{ props.address }}</span>
+    </div>
+    <div class="fund-attributes">
+      <div v-if="props.backendData" class="fund-attribute">
+        <span class="attribute-name">Manager</span>
+        <span class="attribute-value">{{ props.backendData.manager }}</span>
+      </div>
+      <div v-if="props.blockchainData" class="fund-attribute">
+        <span class="attribute-name">AUM</span>
+        <span class="attribute-value">{{ props.blockchainData.aum.toLocaleString(undefined, { style: 'currency', currency: 'USD' }) }}</span>
+      </div>
+      <div v-if="props.backendData" class="fund-attribute">
+        <span class="attribute-name">Minimum Investment</span>
+        <span class="attribute-value">{{ (props.backendData.minInvestment / 1e18).toLocaleString(undefined, { style: 'currency', currency: 'USD' }) }}</span>
+      </div>
+      <div v-if="props.backendData" class="fund-attribute">
+        <span class="attribute-name">Management Fee</span>
+        <span class="attribute-value">{{ props.backendData.managementFee / 1e2 }}%</span>
+      </div>
+      <div v-if="props.backendData" class="fund-attribute">
+        <span class="attribute-name">Performance Fee</span>
+        <span class="attribute-value">{{ props.backendData.performanceFee / 1e2 }}%</span>
+      </div>
+      <div v-if="props.backendData" class="fund-attribute">
+        <span class="attribute-name">Close</span>
+        <span class="attribute-value">{{ new Date(props.backendData.raisingClose).toLocaleString() }}</span>
+      </div>
+      <div v-if="props.backendData" class="fund-attribute">
+        <span class="attribute-name">Raising Closed</span>
+        <span class="attribute-value">{{ new Date(props.backendData.close).toLocaleString() }}</span>
+      </div>
+      <div v-if="props.blockchainData" class="fund-attribute">
+        <span class="attribute-name">Investors</span>
+        <span class="attribute-value">{{ props.blockchainData.investments.length }}</span>
+      </div>
+      <div v-if="props.blockchainData" class="fund-attribute">
+        <span class="attribute-name">Assets</span>
+        <span class="attribute-value">{{ props.blockchainData.assetValues.length }}</span>
+      </div>
     </div>
   </section>
 
@@ -36,9 +75,21 @@ import Modal from "~/components/common/Modal.vue";
 const runtimeConfig = useRuntimeConfig();
 const props = defineProps<{
   address: string,
-  title?: string,
-  investment?: bigint,
-  aum?: bigint,
+  backendData: {
+    name: string,
+    manager: string,
+    close: Date,
+    raisingClose: Date,
+    minInvestment: any,
+    performanceFee: number,
+    managementFee: number,
+  } | null,
+  blockchainData: {
+    aum: bigint,
+    ownInvestment?: bigint,
+    investments: any[],
+    assetValues: any[],
+  } | null,
 }>();
 
 const investForm = reactive({
@@ -115,6 +166,7 @@ const payout = async () => {
       background: var(--primary-color);
       color: var(--inverted-primary-color);
       font-size: 0.9rem;
+      cursor: pointer;
 
       &:hover {
         background: var(--inverted-primary-color);
@@ -136,6 +188,31 @@ const payout = async () => {
     flex-direction: column;
     justify-content: flex-end;
     align-items: flex-start;
+  }
+
+  .fund-attributes {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    gap: var(--small-spacing);
+    align-self: stretch;
+  }
+
+  .fund-attribute {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  .attribute-name {
+    color: var(--secondary-color);
+    font-weight: 400;
+  }
+
+  .attribute-value {
+    color: var(--primary-color);
+    font-weight: 500;
   }
 }
 

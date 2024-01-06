@@ -4,16 +4,15 @@
       <header>
         <div class="value">
           <span>Total Fund Value</span>
-          <h1>{{ backendData?.value.toLocaleString(undefined, { style: 'currency', currency: 'USD' }) || 'N/A' }}</h1>
+          <h1>{{ backendData?.value?.toLocaleString(undefined, { style: 'currency', currency: 'USD' }) || 'N/A' }}</h1>
         </div>
         <div class="fund-menu">
           <button v-if="connectedWallet" :class="{selected: currentTab === 'assets'}" @click="switchTab('assets')">Assets</button>
           <button v-if="connectedWallet" :class="{selected: currentTab === 'investors'}" @click="switchTab('investors')">Investors</button>
-          <button v-if="connectedWallet && backendData?.manager === connectedWallet" :class="{selected: currentTab === 'manage'}" @click="switchTab('manage')">Manage</button>
+          <button v-if="connectedWallet && backendData?.manager.toLowerCase() === connectedWallet" :class="{selected: currentTab === 'manage'}" @click="switchTab('manage')">Manage</button>
         </div>
       </header>
-      <GeneralTab v-if="currentTab === 'general'" :address="address" :title="backendData?.name"
-                  :investment="blockchainData?.ownInvestment" :aum="blockchainData?.aum"/>
+      <GeneralTab v-if="currentTab === 'general'" :address="address" :backend-data="backendData" :blockchain-data="blockchainData"/>
       <AssetsTab v-if="currentTab === 'assets'" :assetValues="blockchainData?.assetValues"/>
       <InvestorsTab v-if="currentTab === 'investors'" :investments="blockchainData?.investments"/>
       <ManageTab v-if="currentTab === 'manage'" :address="address"/>

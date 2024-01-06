@@ -35,7 +35,7 @@ export default defineEventHandler(async (event) => {
 
     const fund = await prismaClient.fund.findUnique({where: {address: address}, select: {address: true}});
     if (fund) {
-        prismaClient.fund.update({
+        return prismaClient.fund.update({
             where: {
                 address,
             },
@@ -45,14 +45,17 @@ export default defineEventHandler(async (event) => {
             }
         });
     } else {
-        prismaClient.fund.create({
+        return prismaClient.fund.create({
             data: {
                 address: address,
                 name: body.name,
                 manager: manager,
                 description: body.description,
                 raisingClose: new Date(Number(await contract.fundRaisingClose()) * 1000),
-                close: new Date(Number(await contract.fundClose()) * 1000)
+                close: new Date(Number(await contract.fundClose()) * 1000),
+                performanceFee: Number(await contract.performanceFee()),
+                managementFee: Number(await contract.investmentFee()),
+                minInvestment: await contract.minimumInvestment(),
             }
         });
     }

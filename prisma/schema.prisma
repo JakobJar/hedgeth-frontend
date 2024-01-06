@@ -15,8 +15,11 @@ model Fund {
   name            String
   description     String?
   manager         String
-  raisingClose    DateTime?
-  close           DateTime?
+  raisingClose    DateTime
+  close           DateTime
+  performanceFee  Int
+  managementFee   Int
+  minInvestment   BigInt
 }
 
 model Token {
