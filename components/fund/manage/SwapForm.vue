@@ -1,40 +1,16 @@
 <template>
   <form id="swap-form">
     <h3>Swap Assets</h3>
-    <div class="input-wrapper swap-input-wrapper">
-      <input v-model="swapForm.amount" placeholder="Amount in" type="number" step="any" required />
-      <button type="button" class="form-button" @click="swapForm.showFromTokenModal = true">{{ swapTokens?.fromToken.symbol || 'None' }}</button>
-    </div>
-    <div class="input-wrapper swap-input-wrapper">
-      <input v-model="swapForm.minimumAmountOut" placeholder="Minimum amount out" type="number" step="any" />
-      <button type="button" class="form-button" @click="swapForm.showToTokenModal = true">{{ swapTokens?.toToken.symbol || 'None' }}</button>
-    </div>
+    <SwapTokenInput v-model:address="swapForm.fromToken" v-model:amount="swapForm.amount" name="Input"/>
+    <SwapTokenInput v-model:address="swapForm.toToken" v-model:amount="swapForm.minimumAmountOut" name="Minimum Output"/>
     <!-- TODO: preview costs -->
     <button class="form-button" type="button" @click="swap">Swap</button>
   </form>
-  <Modal v-if="swapForm.showFromTokenModal">
-    <div class="modal-content">
-      <label>Provide the address of the input token</label>
-      <div class="input-wrapper modal-input-wrapper">
-        <input v-model="swapForm.fromToken" placeholder="Input Token Address" type="text" required />
-      </div>
-      <button class="form-button" type="button" @click="closeModal">Close</button>
-    </div>
-  </Modal>
-  <Modal v-if="swapForm.showToTokenModal">
-    <div class="modal-content">
-      <label>Provide the address of the output token</label>
-      <div class="input-wrapper modal-input-wrapper">
-        <input v-model="swapForm.toToken" placeholder="Output Token Address" type="text" required />
-      </div>
-      <button class="form-button" type="button" @click="closeModal">Close</button>
-    </div>
-  </Modal>
 </template>
 
 <script setup lang="ts">
 import {Contract, ethers} from "ethers";
-import Modal from "~/components/common/Modal.vue";
+import SwapTokenInput from "~/components/fund/manage/SwapTokenInput.vue";
 
 const props = defineProps<{
   address: string
@@ -42,46 +18,11 @@ const props = defineProps<{
 const runtimeConfig = useRuntimeConfig();
 
 const swapForm = reactive({
-  from: '',
   fromToken: runtimeConfig.public.usdcAddress,
-  to: '',
   toToken: '',
   amount: undefined,
   minimumAmountOut: undefined,
-  showFromTokenModal: false,
-  showToTokenModal: false,
 });
-
-const { data: swapTokens, refresh: refreshSwapTokens } = useAsyncData(async () => {
-  const provider = await useEthersProvider();
-  const ierc20Metadata: [] = await $fetch('/abi/ierc20metadata.json');
-
-  let fromSymbol = undefined;
-  try {
-    const fromTokenContract = new Contract(swapForm.fromToken, ierc20Metadata, provider);
-    fromSymbol = await fromTokenContract.symbol();
-  } catch (e) {
-    console.debug(e);
-  }
-
-  let toSymbol = undefined;
-  try {
-    const toTokenContract = new Contract(swapForm.toToken, ierc20Metadata, provider);
-    toSymbol = await toTokenContract.symbol();
-  } catch (e) {
-    console.debug(e);
-  }
-  return {
-    fromToken: {symbol: fromSymbol},
-    toToken: {symbol: toSymbol}
-  };
-}, {server: false});
-
-const closeModal = () => {
-  swapForm.showFromTokenModal = false;
-  swapForm.showToTokenModal = false;
-  refreshSwapTokens();
-};
 
 const getAmounts = async () => {
   const signer = await useEthersSigner();
@@ -104,11 +45,11 @@ const loadRoute = async (amountIn: BigInt, fromTokenDecimals: BigInt, toTokenDec
     "amount": amountIn,
     "tradeType": 0,
     "currencyAmount": {
-      "address": swapForm.from,
+      "address": swapForm.fromToken,
       "decimals": fromTokenDecimals,
     },
     "currency": {
-      "address": swapForm.to,
+      "address": swapForm.toToken,
       "decimals": toTokenDecimals,
     }
   }
@@ -161,29 +102,5 @@ const swap = async () => {
   flex-direction: column;
   align-items: flex-start;
   gap: var(--medium-spacing);
-}
-
-.swap-input-wrapper {
-  justify-content: space-between;
-  gap: var(--small-spacing);
-
-  button {
-    height: 25px;
-    width: auto;
-    padding: 0 var(--small-spacing);
-
-    font-weight: 400;
-    font-size: 0.8rem;
-  }
-}
-
-.modal-content {
-  display: flex;
-  flex-direction: column;
-  gap: var(--small-spacing);
-}
-
-.modal-input-wrapper {
-  width: 500px;
 }
 </style>

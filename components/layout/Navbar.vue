@@ -46,6 +46,7 @@ nav {
   align-items: flex-start;
   flex-shrink: 0;
   align-self: stretch;
+  overflow: hidden;
 
   background: var(--background-color);
 }

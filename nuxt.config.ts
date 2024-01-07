@@ -15,5 +15,13 @@ export default defineNuxtConfig({
       usdcAddress: process.env.USDC_ADDRESS,
       smartRouterUrl: process.env.SMART_ROUTER_URL,
     }
+  },
+  vite: {
+    vue: {
+      script: {
+        defineModel: true,
+        propsDestructure: true,
+      }
+    }
   }
 })

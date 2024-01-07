@@ -2,20 +2,20 @@
   <table>
     <caption>List of all assets the fund owns</caption>
     <thead>
-      <tr>
-        <th>Name</th>
-        <th>Symbol</th>
-        <th>Token</th>
-        <th>Value</th>
-      </tr>
+    <tr>
+      <th>Name</th>
+      <th>Symbol</th>
+      <th>Token</th>
+      <th>Value</th>
+    </tr>
     </thead>
     <tbody>
-      <tr v-for="asset in props.assetValues" :key="asset.token">
-        <td>{{ asset.name }}</td>
-        <td>{{ asset.symbol }}</td>
-        <td>{{ asset.token }}</td>
-        <td>{{ asset.value / (10n ** BigInt(asset.decimals)) }}</td>
-      </tr>
+    <tr v-for="asset in props.assetValues" :key="asset.token">
+      <td>{{ asset.name }}</td>
+      <td>{{ asset.symbol }}</td>
+      <td>{{ asset.token }}</td>
+      <td>{{ asset.value / (10n ** BigInt(asset.decimals)) }}</td>
+    </tr>
     </tbody>
   </table>
 </template>
