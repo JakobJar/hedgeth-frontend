@@ -1,6 +1,11 @@
 <template>
   <button id="connect-button" v-if="!walletAddress" @click="connectWallet" type="button">Connect Wallet</button>
-  <span v-else>{{ walletAddress }}</span>
+  <div v-else class="user-avatar-wrapper">
+    <img :src="`https://effigy.im/a/${walletAddress}.png`"
+         :title="walletAddress" class="user-avatar"
+         alt="Blockie avatar of your wallet address">
+    <span class="avatar-label">Your Account</span>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -43,9 +48,22 @@ const connectWallet = async () => {
   }
 }
 
+.user-avatar-wrapper {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  align-items: center;
+  gap: var(--small-spacing);
+}
+
 .user-avatar {
-  height: 32px;
-  width: 32px;
+  height: 36px;
+  width: 36px;
   border-radius: 50%;
+  padding: 2px;
+}
+
+.avatar-label {
+  font-size: 0.8rem;
 }
 </style>
