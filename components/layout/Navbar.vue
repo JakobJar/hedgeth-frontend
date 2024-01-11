@@ -83,7 +83,7 @@ nav {
 }
 
 .logo {
-  height: 75px;
+  height: 55px;
   align-self: center;
 }
 </style>

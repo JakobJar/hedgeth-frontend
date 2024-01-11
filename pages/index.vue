@@ -12,7 +12,7 @@ import SearchBar from "~/components/home/SearchBar.vue";
 import Modal from "~/components/common/Modal.vue";
 import FundTable from "~/components/common/FundTable.vue";
 
-const { data, pending, error } = useFetch('/api/fund');
+const { data } = useFetch('/api/fund');
 </script>
 
 <style scoped lang="scss">
