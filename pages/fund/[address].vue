@@ -19,6 +19,7 @@
     </main>
     <section id="transaction-sidebar">
       <h3>Recent Transaction</h3>
+      <TransactionLog :address="address"/>
     </section>
   </NuxtLayout>
 </template>
@@ -29,8 +30,7 @@ import ManageTab from "~/components/fund/manage/ManageTab.vue";
 import GeneralTab from "~/components/fund/general/GeneralTab.vue";
 import AssetsTab from "~/components/fund/AssetsTab.vue";
 import InvestorsTab from "~/components/fund/InvestorsTab.vue";
-import PriceChart from "~/components/fund/general/PriceChart.vue";
-import MetaForm from "~/components/fund/manage/MetaForm.vue";
+import TransactionLog from "~/components/fund/TransactionLog.vue";
 
 const route = useRoute();
 const address = Array.isArray(route.params.address) ? route.params.address[0] : route.params.address;
@@ -51,12 +51,12 @@ const switchTab = (tab: string) => {
 };
 
 const { data: blockchainData } = useAsyncData(async () => {
-  const ethers = await useEthersProvider();
+  const provider = await useEthersProvider();
   const currentAddress = await useCurrentAddress();
 
   const fundABI: [] = await $fetch('/abi/ifund.json');
 
-  const fundContract = new Contract(address, fundABI, ethers.provider);
+  const fundContract = new Contract(address, fundABI, provider.provider);
 
   const investments: any[] = await fundContract.getInvestments();
   let aum = 0n;
