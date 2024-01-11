@@ -26,10 +26,10 @@
 <script setup lang="ts">
 import {Contract} from "ethers";
 import ManageTab from "~/components/fund/manage/ManageTab.vue";
-import GeneralTab from "~/components/fund/GeneralTab.vue";
+import GeneralTab from "~/components/fund/general/GeneralTab.vue";
 import AssetsTab from "~/components/fund/AssetsTab.vue";
 import InvestorsTab from "~/components/fund/InvestorsTab.vue";
-import PriceChart from "~/components/fund/PriceChart.vue";
+import PriceChart from "~/components/fund/general/PriceChart.vue";
 import MetaForm from "~/components/fund/manage/MetaForm.vue";
 
 const route = useRoute();
@@ -60,7 +60,7 @@ const { data: blockchainData } = useAsyncData(async () => {
 
   const investments: any[] = await fundContract.getInvestments();
   let aum = 0n;
-  let ownInvestment: bigint | undefined = undefined;
+  let ownInvestment: bigint | null = null;
   for (const investment of investments) {
     aum += investment.value;
     if (investment.investor.toLowerCase() === currentAddress) {

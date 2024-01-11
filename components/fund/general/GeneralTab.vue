@@ -69,7 +69,7 @@
 
 <script setup lang="ts">
 import {Contract} from "ethers";
-import PriceChart from "~/components/fund/PriceChart.vue";
+import PriceChart from "~/components/fund/general/PriceChart.vue";
 import Modal from "~/components/common/Modal.vue";
 
 const runtimeConfig = useRuntimeConfig();

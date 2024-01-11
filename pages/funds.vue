@@ -8,7 +8,7 @@
 </template>
 
 <script setup lang="ts">
-import CreateFundModal from "~/components/home/CreateFundModal.vue";
+import CreateFundModal from "~/components/funds/CreateFundModal.vue";
 
 const showCreateFundModal = ref(false);
 </script>

@@ -34,7 +34,7 @@ const { data: token, refresh: refreshToken } = useAsyncData('SwapForm - ' + prop
   const provider = await useEthersProvider();
   const ierc20Metadata: [] = await $fetch('/abi/ierc20metadata.json');
 
-  let symbol = undefined;
+  let symbol = null;
   try {
     const tokenContract = new Contract(tokenAddress.value, ierc20Metadata, provider);
     symbol = await tokenContract.symbol();
