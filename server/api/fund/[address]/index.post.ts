@@ -49,7 +49,7 @@ export default defineEventHandler(async (event) => {
             data: {
                 address: address,
                 name: body.name,
-                manager: manager,
+                manager: manager.toLowerCase(),
                 description: body.description,
                 raisingClose: new Date(Number(await contract.fundRaisingClose()) * 1000),
                 close: new Date(Number(await contract.fundClose()) * 1000),

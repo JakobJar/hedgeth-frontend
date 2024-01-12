@@ -3,7 +3,7 @@
   <section id="investing">
     <div class="investment-value">
       <span>Your Investment</span>
-      <h2>{{(props.blockchainData?.ownInvestment ? props.blockchainData.ownInvestment / 10n ** 18n : 0n)
+      <h2>{{(props.blockchainData?.ownInvestment ? Number(props.blockchainData.ownInvestment) / 10 ** 18 : 0)
           .toLocaleString(undefined, { style: 'currency', currency: 'USD' })}}</h2>
     </div>
     <div class="investment-actions">
@@ -23,7 +23,7 @@
       </div>
       <div v-if="props.blockchainData" class="fund-attribute">
         <span class="attribute-name">AUM</span>
-        <span class="attribute-value">{{ props.blockchainData.aum.toLocaleString(undefined, { style: 'currency', currency: 'USD' }) }}</span>
+        <span class="attribute-value">{{ (Number(props.blockchainData.aum) / 1e18).toLocaleString(undefined, { style: 'currency', currency: 'USD' }) }}</span>
       </div>
       <div v-if="props.backendData" class="fund-attribute">
         <span class="attribute-name">Minimum Investment</span>

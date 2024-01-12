@@ -13,7 +13,7 @@
     <tbody v-if="props.funds">
     <tr v-for="fund in funds" :key="fund.address" @click="clickFund(fund.address)" class="selectable">
       <td>{{ fund.name }}</td>
-      <td>$ {{ fund.value?.toLocaleString() || 'N/A' }}</td>
+      <td>{{ fund.value?.toLocaleString(undefined, { style: 'currency', currency: 'USD' }) || 'N/A' }}</td>
       <td>{{ fund.manager }}</td>
       <td>{{ new Date(fund.raisingClose).toLocaleString() }}</td>
       <td>{{ new Date(fund.close).toLocaleString() }}</td>

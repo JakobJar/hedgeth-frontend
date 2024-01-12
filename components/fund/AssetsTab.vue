@@ -14,7 +14,7 @@
       <td>{{ asset.name }}</td>
       <td>{{ asset.symbol }}</td>
       <td>{{ asset.token }}</td>
-      <td>{{ asset.value / (10n ** BigInt(asset.decimals)) }}</td>
+      <td>{{ Number(asset.value) / (10 ** Number(asset.decimals)) }}</td>
     </tr>
     </tbody>
   </table>

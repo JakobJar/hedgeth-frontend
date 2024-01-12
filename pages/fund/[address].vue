@@ -18,8 +18,7 @@
       <ManageTab v-if="currentTab === 'manage'" :address="address"/>
     </main>
     <section id="transaction-sidebar">
-      <h3>Recent Transaction</h3>
-      <TransactionLog :address="address"/>
+      <TransactionLog :asset-values="[]" :log="[]"/>
     </section>
   </NuxtLayout>
 </template>
@@ -68,11 +67,13 @@ const { data: blockchainData } = useAsyncData(async () => {
     }
   }
 
+  //const swaps = await fundContract.queryFilter(fundContract.filters.AssetSwap(), 0, 'latest');
   return {
     aum: aum,
     ownInvestment: ownInvestment,
     investments: investments,
     assetValues: await fundContract.getAssetValues(),
+    //swaps: swaps.map(swap => (swap instanceof EventLog) ? swap.args : null)
   };
 }, {server: false});
 
@@ -132,7 +133,7 @@ header {
   padding: var(--large-spacing);
   flex-direction: column;
   align-items: flex-start;
-  gap: var(--large-spacing);
+  gap: var(--small-spacing);
   flex-shrink: 0;
   align-self: stretch;
 }

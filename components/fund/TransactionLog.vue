@@ -1,29 +1,19 @@
 <template>
-  <h1>Hallo</h1>
+  <h3>Transaction Log</h3>
+  <p>WIP</p>
 </template>
 
 <script setup lang="ts">
-import {ethers} from "ethers";
-
 const props = defineProps<{
-  address: string,
+  assetValues: {
+    name: string,
+    symbol: string,
+    token: string,
+    value: bigint,
+    decimals: number,
+  }[],
+  log: [][]
 }>();
-
-const { data } = useAsyncData(async () => {
-  const provider = await useEthersProvider();
-
-  const eventLog = await provider.getLogs({
-    address: props.address,
-    fromBlock: 0,
-    toBlock: 'latest',
-    topics: [
-      ethers.id('AssetSwap(address,uint256,address,uint256)'),
-    ]
-  });
-
-  console.log(eventLog);
-  return eventLog;
-}, {server: false});
 </script>
 
 <style scoped lang="scss">
