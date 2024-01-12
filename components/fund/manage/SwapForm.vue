@@ -35,8 +35,8 @@ const getAmounts = async () => {
   const fromTokenDecimals = await fromTokenContract.decimals();
   const toTokenDecimals = await toTokenContract.decimals();
 
-  const amountIn = BigInt(swapForm.amount! * 10 ** fromTokenDecimals);
-  const minAmountOut = BigInt((swapForm.minimumAmountOut ?? 0) * 10 ** toTokenDecimals);
+  const amountIn = BigInt(swapForm.amount! * 10 ** Number(fromTokenDecimals));
+  const minAmountOut = BigInt((swapForm.minimumAmountOut ?? 0) * 10 ** Number(toTokenDecimals));
   return {amountIn, minAmountOut, fromTokenDecimals, toTokenDecimals};
 }
 
@@ -91,7 +91,7 @@ const swap = async () => {
   const encodedPath = ethers.solidityPacked(encodeTypes, encodeValues);
 
   const fundContract = new Contract(props.address, fundABI, signer);
-  await fundContract.getFunction('swapAssets').send(encodedPath, amountIn, minAmountOut);
+  await fundContract.getFunction('swapAssets').send(encodedPath, amountIn, minAmountOut, swapForm.fromToken, swapForm.toToken);
 };
 </script>
 
