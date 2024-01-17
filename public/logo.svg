@@ -2,15 +2,15 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="464.13803"
-   height="131.8387"
-   viewBox="0 0 464.13803 131.8387"
-   version="1.1"
-   id="svg1"
-   xml:space="preserve"
-   xmlns:xlink="http://www.w3.org/1999/xlink"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:svg="http://www.w3.org/2000/svg"><defs
+        width="464.13803"
+        height="131.8387"
+        viewBox="0 0 464.13803 131.8387"
+        version="1.1"
+        id="svg1"
+        xml:space="preserve"
+        xmlns:xlink="http://www.w3.org/1999/xlink"
+        xmlns="http://www.w3.org/2000/svg"
+><defs
      id="defs1"><rect
        x="22.943962"
        y="35.690609"
@@ -44,7 +44,7 @@
              id="text1"
              style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:100px;font-family:Sans;-inkscape-font-specification:Sans;white-space:pre;shape-inside:url(#rect1);fill:#000000"
              transform="translate(13.256512,7.3298272)"><tspan
-               x="22.943359"
+               x="90.943359"
                y="126.92444"
                id="tspan2"><tspan
                  style="font-family:Merriweather;-inkscape-font-specification:Merriweather"
