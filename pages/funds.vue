@@ -12,6 +12,10 @@
 import CreateFundModal from "~/components/funds/CreateFundModal.vue";
 import FundTable from "~/components/common/FundTable.vue";
 
+useSeoMeta({
+  title: 'My Funds - hedgeth',
+});
+
 const showCreateFundModal = ref(false);
 
 const { data } = useAsyncData(async () => {

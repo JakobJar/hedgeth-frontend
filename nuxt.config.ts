@@ -22,6 +22,14 @@ export default defineNuxtConfig({
         defineModel: true,
         propsDestructure: true,
       }
-    }
+    },
+    optimizeDeps: {
+      esbuildOptions: {
+        target: "esnext",
+      }
+    },
+    build: {
+      target: "esnext",
+    },
   }
 })

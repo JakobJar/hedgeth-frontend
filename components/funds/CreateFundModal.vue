@@ -85,7 +85,7 @@ const createFund = async () => {
   const parsedFundRaisingClose = new Date(formData.fundRaisingClose);
   const parsedFundClose = new Date(formData.fundClose);
   const fundTransaction = await fundFactoryContract.getFunction('createFund').send(
-      BigInt(formData.minimumInvestment) * 10n ** 18n,
+      BigInt(formData.minimumInvestment * 10 ** 18),
       formData.fee * 1e2,
       formData.performanceFee * 1e2,
       BigInt(Math.round(parsedFundRaisingClose.getTime() / 1000)),

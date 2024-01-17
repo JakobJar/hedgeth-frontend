@@ -31,6 +31,10 @@ import AssetsTab from "~/components/fund/AssetsTab.vue";
 import InvestorsTab from "~/components/fund/InvestorsTab.vue";
 import TransactionLog from "~/components/fund/TransactionLog.vue";
 
+useSeoMeta({
+  title: 'Fund - hedgeth',
+});
+
 const route = useRoute();
 const address = Array.isArray(route.params.address) ? route.params.address[0] : route.params.address;
 
@@ -58,7 +62,7 @@ const { data: blockchainData } = useAsyncData(async () => {
   const fundContract = new Contract(address, fundABI, provider.provider);
 
   const investments: any[] = await fundContract.getInvestments();
-  let aum = 0n;
+  let aum = BigInt(0);
   let ownInvestment: bigint | null = null;
   for (const investment of investments) {
     aum += investment.value;

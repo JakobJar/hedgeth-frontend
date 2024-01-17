@@ -2,6 +2,8 @@
   <NuxtLayout name="main">
     <main>
       <SearchBar/>
+      <p>This app is a prototype, it may have bugs or unfinished features.
+      Please use the sepolia test network to make it work properly.</p>
       <FundTable :funds="data"/>
     </main>
   </NuxtLayout>
@@ -9,8 +11,11 @@
 
 <script setup lang="ts">
 import SearchBar from "~/components/home/SearchBar.vue";
-import Modal from "~/components/common/Modal.vue";
 import FundTable from "~/components/common/FundTable.vue";
+
+useSeoMeta({
+  title: 'Home - hedgeth',
+});
 
 const { data } = useFetch('/api/fund');
 </script>

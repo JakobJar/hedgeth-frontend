@@ -18,18 +18,18 @@ const menuItems = [
     name: 'Home',
     link: '/',
   },
-  {
+  /*{
     name: 'My Investments',
     link: '/investments',
-  },
+  },*/
   {
     name: 'My Funds',
     link: '/funds',
   },
-  {
+  /*{
     name: 'FAQ',
     link: '/faq',
-  },
+  },*/
 ];
 
 const route = useRoute();
