@@ -1,6 +1,6 @@
 <template>
   <nav>
-    <img src="/logo.svg" class="logo" alt="Logo">
+    <img src="/logo.png" class="logo" alt="Logo">
     <div class="menu">
       <NuxtLink v-for="item in menuItems" :key="item.name" :to="item.link" class="menu-item" :class="{selected: route.fullPath === item.link}">
         {{ item.name }}
