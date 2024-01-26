@@ -5,7 +5,7 @@
       <FundTable :funds="data"/>
     </main>
   </NuxtLayout>
-  <CreateFundModal v-if="showCreateFundModal"/>
+  <CreateFundModal v-if="showCreateFundModal" @close="showCreateFundModal = false"/>
 </template>
 
 <script setup lang="ts">

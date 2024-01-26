@@ -56,7 +56,7 @@
     </div>
   </section>
 
-  <Modal v-if="investForm.showModal">
+  <Modal v-if="investForm.showModal" @close="investForm.showModal = false">
     <div class="invest-modal-content">
       <p>Provide the amount of USDC you want to invest into the fund.</p>
       <div class="input-wrapper">

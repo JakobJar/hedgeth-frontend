@@ -3,7 +3,7 @@
     <input v-model="amount" :placeholder="props.name + ' Amount'" type="number" step="any" required />
     <button type="button" class="form-button" @click="showModal = true">{{ token?.symbol || 'None' }}</button>
 
-    <Modal v-if="showModal">
+    <Modal v-if="showModal" @close="showModal = false">
       <div class="modal-content">
         <label>Provide the address of the {{ props.name }} token</label>
         <div class="input-wrapper modal-input-wrapper">

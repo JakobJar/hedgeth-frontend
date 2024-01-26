@@ -1,5 +1,5 @@
 <template>
-  <Modal>
+  <Modal @close="emit('close')">
     <form class="create-fund-form">
       <h3>Create Fund</h3>
       <p>Seize control of your financial destiny — create your own fund!
@@ -58,6 +58,8 @@
 <script setup lang="ts">
 import {Contract} from "ethers";
 import Modal from "~/components/common/Modal.vue";
+
+const emit = defineEmits(['close']);
 
 const runtimeConfig = useRuntimeConfig();
 
