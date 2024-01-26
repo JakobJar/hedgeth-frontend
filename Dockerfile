@@ -8,6 +8,7 @@ COPY app.vue /app/
 COPY ./server/ /app/server/
 COPY ./public/ /app/public/
 COPY ./prisma/ /app/prisma/
+COPY ./plugins/ /app/plugins/
 COPY ./pages/ /app/pages/
 COPY ./layouts/ /app/layouts/
 COPY ./composables/ /app/composables/

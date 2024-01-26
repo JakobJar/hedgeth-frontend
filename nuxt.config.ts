@@ -16,6 +16,9 @@ export default defineNuxtConfig({
       smartRouterUrl: process.env.SMART_ROUTER_URL,
     }
   },
+  build: {
+    transpile: ['vue-toastification'],
+  },
   vite: {
     vue: {
       script: {

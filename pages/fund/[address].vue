@@ -30,6 +30,7 @@ import GeneralTab from "~/components/fund/general/GeneralTab.vue";
 import AssetsTab from "~/components/fund/AssetsTab.vue";
 import InvestorsTab from "~/components/fund/InvestorsTab.vue";
 import TransactionLog from "~/components/fund/TransactionLog.vue";
+import {useToast} from "vue-toastification";
 
 useSeoMeta({
   title: 'Fund - hedgeth',
@@ -43,6 +44,11 @@ const connectedWallet = ref<string | undefined>(undefined);
 
 onMounted(async () => {
   connectedWallet.value = await useCurrentAddress();
+
+  if (connectedWallet.value)
+    return;
+  const toast = useToast();
+  toast.info("Please connect your wallet for experience the full functionality of this page.");
 });
 
 const switchTab = (tab: string) => {

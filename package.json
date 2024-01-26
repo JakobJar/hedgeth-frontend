@@ -21,6 +21,7 @@
     "ethers": "^6.7.1",
     "sass": "^1.68.0",
     "typescript": "^5.2.2",
-    "vue-chartjs": "^5.3.0"
+    "vue-chartjs": "^5.3.0",
+    "vue-toastification": "^2.0.0-rc.5"
   }
 }

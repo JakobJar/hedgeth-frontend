@@ -1,4 +1,5 @@
 import {AbstractProvider, BrowserProvider, ethers, JsonRpcSigner} from "ethers";
+import {useToast} from "vue-toastification";
 
 export const useEthersProvider = async (): Promise<AbstractProvider> => {
     if (process.server) {
@@ -14,11 +15,24 @@ export const useEthersProvider = async (): Promise<AbstractProvider> => {
 }
 
 export const useEthersSigner = async (): Promise<JsonRpcSigner> => {
-    const provider = await useEthersProvider();
+    let provider;
+    try {
+        provider = await useEthersProvider();
+    } catch (e) {
+        const toast = useToast();
+        toast.error("No wallet available.");
+        throw e;
+    }
     if (!(provider instanceof BrowserProvider))
         throw new Error("Provider is not a BrowserProvider");
 
-    return await provider.getSigner();
+    try {
+        return await provider.getSigner();
+    } catch (e) {
+        const toast = useToast();
+        toast.error("Please connect your wallet.");
+        throw e;
+    }
 }
 
 export const useCurrentAddress = async (): Promise<string | undefined> => {
