@@ -4,7 +4,7 @@ import {useToast} from "vue-toastification";
 export const useEthersProvider = async (): Promise<AbstractProvider> => {
     if (process.server) {
         const runtimeConfig = useRuntimeConfig();
-        return new ethers.InfuraProvider(runtimeConfig.public.network, runtimeConfig.infura.projectId, runtimeConfig.infura.projectSecret);
+        return new ethers.InfuraProvider(runtimeConfig.public.network, runtimeConfig.infuraProjectId, runtimeConfig.infuraProjectSecret);
         // @ts-ignore
     } else if (window.ethereum) {
         // @ts-ignore

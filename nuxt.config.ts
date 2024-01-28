@@ -5,13 +5,11 @@ export default defineNuxtConfig({
     '~/assets/css/main.scss',
   ],
   runtimeConfig: {
-    infura: {
-      projectId: process.env.INFURA_PROJECT_ID,
-      projectSecret: process.env.INFURA_PROJECT_SECRET,
-    },
+    infuraProjectId: process.env.INFURA_PROJECT_ID,
+    infuraProjectSecret: process.env.INFURA_PROJECT_SECRET,
     public: {
       network: process.env.NETWORK ?? 'sepolia',
-      fundFactoryAddress: process.env.FUND_FACTORY,
+      fundFactoryAddress: process.env.FUND_FACTORY_ADDRESS,
       usdcAddress: process.env.USDC_ADDRESS,
       smartRouterUrl: process.env.SMART_ROUTER_URL,
     }
