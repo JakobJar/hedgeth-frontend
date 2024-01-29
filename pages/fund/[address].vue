@@ -18,13 +18,13 @@
       <ManageTab v-if="currentTab === 'manage'" :address="address"/>
     </main>
     <section id="transaction-sidebar">
-      <TransactionLog :asset-values="[]" :log="[]"/>
+      <TransactionLog :asset-values="blockchainData?.assetValues || []" :log="blockchainData?.swaps || []"/>
     </section>
   </NuxtLayout>
 </template>
 
 <script setup lang="ts">
-import {Contract} from "ethers";
+import {Contract, EventLog} from "ethers";
 import ManageTab from "~/components/fund/manage/ManageTab.vue";
 import GeneralTab from "~/components/fund/general/GeneralTab.vue";
 import AssetsTab from "~/components/fund/AssetsTab.vue";
@@ -77,13 +77,13 @@ const { data: blockchainData } = useAsyncData(async () => {
     }
   }
 
-  //const swaps = await fundContract.queryFilter(fundContract.filters.AssetSwap(), 0, 'latest');
+  const swaps = await fundContract.queryFilter(fundContract.filters.AssetSwap(), 0, 'latest');
   return {
     aum: aum,
     ownInvestment: ownInvestment,
     investments: investments,
     assetValues: await fundContract.getAssetValues(),
-    //swaps: swaps.map(swap => (swap instanceof EventLog) ? swap.args : null)
+    swaps: swaps.map(swap => (swap instanceof EventLog) ? swap : null).filter(swap => swap !== null)
   };
 }, {server: false});
 
@@ -139,7 +139,7 @@ header {
 
 #transaction-sidebar {
   display: flex;
-  width: 350px;
+  width: calc(320px - 2 * var(--large-spacing));
   padding: var(--large-spacing);
   flex-direction: column;
   align-items: flex-start;
