@@ -77,13 +77,13 @@ const { data: blockchainData } = useAsyncData(async () => {
     }
   }
 
-  const swaps = await fundContract.queryFilter(fundContract.filters.AssetSwap(), 0, 'latest');
+  //const swaps = await fundContract.queryFilter(fundContract.filters.AssetSwap(), 0, 'latest');
   return {
     aum: aum,
     ownInvestment: ownInvestment,
     investments: investments,
     assetValues: await fundContract.getAssetValues(),
-    swaps: swaps.map(swap => (swap instanceof EventLog) ? swap : null).filter(swap => swap !== null)
+    //swaps: swaps.map(swap => (swap instanceof EventLog) ? swap : null).filter(swap => swap !== null)
   };
 }, {server: false});
 
@@ -95,7 +95,7 @@ main {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  width: 100%;
+  width: calc(100% - 2 * var(--large-spacing));
   padding: var(--large-spacing);
   gap: var(--large-spacing);
 }

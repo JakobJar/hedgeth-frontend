@@ -3,8 +3,7 @@
   <section id="investing">
     <div class="investment-value">
       <span>Your Investment</span>
-      <h2>{{(props.blockchainData?.ownInvestment ? Number(props.blockchainData.ownInvestment) / 10 ** 18 : 0)
-          .toLocaleString(undefined, { style: 'currency', currency: 'USD' })}}</h2>
+      <h2>{{ getInvestment.toLocaleString(undefined, { style: 'currency', currency: 'USD' }) }}</h2>
     </div>
     <div class="investment-actions">
       <button @click="investForm.showModal = true">Invest</button>
@@ -95,7 +94,20 @@ const props = defineProps<{
 const investForm = reactive({
   showModal: false,
   amount: 0.0,
-})
+});
+
+const getInvestment = computed(() => {
+  const ownInvestment = props.blockchainData?.ownInvestment;
+  if (!ownInvestment)
+    return 0;
+  const ownInvestmentDecimal = Number(ownInvestment) / 1e18;
+
+  const currentValue = props.backendData?.value;
+  if (!currentValue)
+    return Number(ownInvestment) / 1e18;
+  const aumDecimal = (Number(props.blockchainData?.aum) || 0) / 1e18;
+  return ownInvestmentDecimal * (Number(currentValue) / Number(aumDecimal));
+});
 
 const invest = async () => {
   const signer = await useEthersSigner();

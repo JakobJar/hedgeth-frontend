@@ -1,7 +1,7 @@
 <template>
   <h3>Transaction Log</h3>
   <div id="transactions">
-    <div v-if="props.log" v-for="entry in props.log" class="transaction">
+    <div v-if="props.log.length > 0" v-for="entry in props.log" class="transaction">
       <p>
         {{ Number(entry.args[1]) / 10 ** Number(tokens[entry.args[0]].decimals)}}
         <abbr :title="entry.args[0]">{{ tokens[entry.args[0]].symbol }}</abbr> =>
@@ -9,6 +9,7 @@
         <abbr :title="entry.args[2]">{{ tokens[entry.args[2]].symbol }}</abbr>
       </p>
     </div>
+    <p v-else>No data available.</p>
   </div>
 </template>
 
