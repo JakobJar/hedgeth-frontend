@@ -1,6 +1,6 @@
 <template>
   <nav>
-    <img src="/logo.png" class="logo" alt="Logo">
+    <img src="/logo.webp" class="logo" alt="Logo">
     <div class="menu">
       <NuxtLink v-for="item in menuItems" :key="item.name" :to="item.link" class="menu-item" :class="{selected: route.fullPath === item.link}">
         {{ item.name }}
@@ -75,7 +75,7 @@ nav {
     }
 
     &.selected {
-      background: linear-gradient(90deg, #0a5aa6bb 0%, #8c0086bb 100%);
+      background: linear-gradient(90deg, #411b79ff 0%, #f4507bff 100%);
       color: #FFFFFF;
       font-weight: 500;
     }
