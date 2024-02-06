@@ -24,7 +24,7 @@
 </template>
 
 <script setup lang="ts">
-import {Contract, EventLog} from "ethers";
+import {Contract} from "ethers";
 import ManageTab from "~/components/fund/manage/ManageTab.vue";
 import GeneralTab from "~/components/fund/general/GeneralTab.vue";
 import AssetsTab from "~/components/fund/AssetsTab.vue";
@@ -33,7 +33,7 @@ import TransactionLog from "~/components/fund/TransactionLog.vue";
 import {useToast} from "vue-toastification";
 
 useSeoMeta({
-  title: 'Fund - hedgeth',
+  title: 'Fund - Hedgeth',
 });
 
 const route = useRoute();

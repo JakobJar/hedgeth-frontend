@@ -13,7 +13,7 @@ import CreateFundModal from "~/components/funds/CreateFundModal.vue";
 import FundTable from "~/components/common/FundTable.vue";
 
 useSeoMeta({
-  title: 'My Funds - hedgeth',
+  title: 'My Funds - Hedgeth',
 });
 
 const showCreateFundModal = ref(false);
