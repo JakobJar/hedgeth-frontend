@@ -10,9 +10,9 @@
   },
   "devDependencies": {
     "@nuxt/devtools": "^1.0.6",
-    "@prisma/client": "^5.7.1",
+    "@prisma/client": "^5.9.1",
     "nuxt": "^3.7.0",
-    "prisma": "^5.7.1"
+    "prisma": "^5.9.1"
   },
   "dependencies": {
     "@influxdata/influxdb-client": "^1.33.2",

@@ -11,20 +11,28 @@ datasource db {
 }
 
 model Fund {
-  address         String    @id
-  name            String
-  description     String?
-  manager         String
-  raisingClose    DateTime
-  close           DateTime
-  performanceFee  Int
-  managementFee   Int
-  minInvestment   BigInt
+  address        String   @id @db.Char(42)
+  name           String   @db.VarChar(128)
+  description    String?
+  manager        String   @db.Char(42)
+  raisingClose   DateTime
+  close          DateTime
+  performanceFee Int      @db.SmallInt
+  managementFee  Int      @db.SmallInt
+  minInvestment  BigInt
+
+  @@index([name], name: "fund_name")
+  @@index([manager], name: "fund_manager")
+  @@index([raisingClose], name: "fund_raisingClose")
+  @@index([close], name: "fund_close")
 }
 
 model Token {
-  address         String    @id
-  name            String
-  symbol          String
-  decimals        Int
+  address  String @id @db.Char(42)
+  name     String @db.VarChar(128)
+  symbol   String @db.VarChar(128)
+  decimals Int    @db.SmallInt
+
+  @@index([name], name: "token_name")
+  @@index([symbol], name: "token_symbol")
 }
