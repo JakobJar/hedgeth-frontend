@@ -12,12 +12,12 @@ const getIntervalInterval = (range: any): string | undefined => {
         return "1h";
     if (range === "1w")
         return "6h";
-    if (range === "1m")
+    if (range === "30d")
         return "1d";
-    if (range === "1y")
+    if (range === "365d")
         return "1w";
     if (range === "0")
-        return "1m";
+        return "30d";
     return undefined;
 }
 

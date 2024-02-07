@@ -12,14 +12,7 @@
 
 <script setup lang="ts">
 import {Line} from 'vue-chartjs'
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Tooltip,
-} from 'chart.js'
+import {CategoryScale, Chart as ChartJS, LinearScale, LineElement, PointElement, Tooltip,} from 'chart.js'
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Tooltip);
 
@@ -30,8 +23,8 @@ const props = defineProps<{
 const ranges = [
   {key: '1d', label: '1D'},
   {key: '1w', label: '1W'},
-  {key: '1m', label: '1M'},
-  {key: '1y', label: '1Y'},
+  {key: '30d', label: '1M'},
+  {key: '365d', label: '1Y'},
   {key: '0', label: 'ALL'},
 ];
 const selectedTimeframe = ref(1);
