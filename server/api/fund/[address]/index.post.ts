@@ -54,8 +54,7 @@ export default defineEventHandler(async (event) => {
                 raisingClose: new Date(Number(await contract.fundRaisingClose()) * 1000),
                 close: new Date(Number(await contract.fundClose()) * 1000),
                 performanceFee: Number(await contract.performanceFee()),
-                managementFee: Number(await contract.investmentFee()),
-                minInvestment: await contract.minimumInvestment(),
+                managementFee: Number(await contract.investmentFee())
             }
         });
     }

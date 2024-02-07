@@ -44,12 +44,6 @@
           </div>
         </div>
       </div>
-      <div class="input-group">
-        <label for="minimumInvestment">Minimum Investment (USD)</label>
-        <div class="input-wrapper">
-          <input v-model="formData.minimumInvestment" type="number" id="minimumInvestment" step="0.01" placeholder="Minimum investment" />
-        </div>
-      </div>
       <button class="form-button" type="button" @click="createFund">Create Fund</button>
     </form>
   </Modal>
@@ -71,7 +65,6 @@ const formData = reactive({
   description: '',
   fee: 0,
   performanceFee: 0,
-  minimumInvestment: 1,
   fundRaisingClose: fundRaisingClose.toISOString().slice(0, 16),
   fundClose: fundClose.toISOString().slice(0, 16)
 });
@@ -87,7 +80,6 @@ const createFund = async () => {
   const parsedFundRaisingClose = new Date(formData.fundRaisingClose);
   const parsedFundClose = new Date(formData.fundClose);
   const fundTransaction = await fundFactoryContract.getFunction('createFund').send(
-      BigInt(formData.minimumInvestment * 10 ** 18),
       formData.fee * 1e2,
       formData.performanceFee * 1e2,
       BigInt(Math.round(parsedFundRaisingClose.getTime() / 1000)),

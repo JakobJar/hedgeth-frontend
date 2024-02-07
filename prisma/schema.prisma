@@ -19,7 +19,6 @@ model Fund {
   close          DateTime
   performanceFee Int      @db.SmallInt
   managementFee  Int      @db.SmallInt
-  minInvestment  BigInt
 
   @@index([name], name: "fund_name")
   @@index([manager], name: "fund_manager")

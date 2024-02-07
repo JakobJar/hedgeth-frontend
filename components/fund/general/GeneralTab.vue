@@ -25,10 +25,6 @@
         <span class="attribute-value">{{ (Number(props.blockchainData.aum) / 1e18).toLocaleString(undefined, { style: 'currency', currency: 'USD' }) }}</span>
       </div>
       <div v-if="props.backendData" class="fund-attribute">
-        <span class="attribute-name">Minimum Investment</span>
-        <span class="attribute-value">{{ (props.backendData.minInvestment / 1e18).toLocaleString(undefined, { style: 'currency', currency: 'USD' }) }}</span>
-      </div>
-      <div v-if="props.backendData" class="fund-attribute">
         <span class="attribute-name">Management Fee</span>
         <span class="attribute-value">{{ props.backendData.managementFee / 1e2 }}%</span>
       </div>
@@ -79,7 +75,6 @@ const props = defineProps<{
     manager: string,
     close: Date,
     raisingClose: Date,
-    minInvestment: any,
     performanceFee: number,
     managementFee: number,
   } | null,
