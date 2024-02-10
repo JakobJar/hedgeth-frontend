@@ -1,6 +1,6 @@
 <template>
   <div class="layout">
-    <Navbar/>
+    <Navbar class="navbar"/>
     <slot/>
   </div>
 </template>
@@ -16,5 +16,11 @@ import Navbar from "~/components/layout/Navbar.vue";
   justify-content: flex-start;
   width: 100vw;
   background: var(--background-color);
+}
+
+@media (max-width: 920px) {
+  .navbar {
+    display: none;
+  }
 }
 </style>

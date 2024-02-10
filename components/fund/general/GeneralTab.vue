@@ -207,6 +207,7 @@ const payout = async () => {
 
   .fund-attribute {
     display: flex;
+    flex-wrap: wrap;
     width: 100%;
     justify-content: space-between;
     align-items: flex-start;

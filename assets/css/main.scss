@@ -105,7 +105,11 @@ button.form-button {
 }
 
 table {
+  display: block;
+  table-layout: auto;
+  width: 100%;
   border-collapse: collapse;
+  overflow-x: auto;
 
   & > caption {
     display: none;
@@ -118,12 +122,13 @@ table {
 
   th {
     text-align: center;
+    padding: 0 var(--medium-spacing);
     padding-bottom: var(--small-spacing);
   }
 
   td {
     text-align: center;
-    padding: var(--medium-spacing) 0;
+    padding: var(--medium-spacing);
   }
 
   tbody > tr {

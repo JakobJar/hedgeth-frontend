@@ -24,7 +24,7 @@ main {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  width: 100%;
+  width: calc(100% - 2 * var(--large-spacing));
   padding: var(--large-spacing);
   gap: var(--large-spacing);
 }
