@@ -1,15 +1,23 @@
 <template>
   <div class="input-wrapper swap-input-wrapper">
-    <input v-model="amount" :placeholder="props.name + ' Amount'" type="number" step="any" required />
+    <input v-model="amount" :placeholder="props.name + ' Amount'" type="number" step="any" required/>
     <button type="button" class="form-button" @click="showModal = true">{{ token?.symbol || 'None' }}</button>
 
-    <Modal v-if="showModal" @close="showModal = false">
+    <Modal v-if="showModal" @close="closeModal">
       <div class="modal-content">
-        <label>Provide the address of the {{ props.name }} token</label>
+        <label>Search for a token or provide the address for the {{ props.name.toLowerCase() }} token.</label>
         <div class="input-wrapper modal-input-wrapper">
-          <input v-model="tokenAddress" :placeholder="props.name + ' Token Address'" type="text" required />
+          <input v-model="search" :placeholder="props.name + ' Token Query'" type="text"/>
         </div>
-        <button class="form-button" type="button" @click="closeModal">Close</button>
+        <div>
+          <label>Search results:</label>
+          <div class="search-results">
+            <div v-if="queriedTokens" v-for="token in queriedTokens" :key="token.address" @click="closeModal(token.address)" class="search-result">
+              <p>{{ token.name }} ({{ token.symbol }})</p>
+              <span>{{ token.address }}</span>
+            </div>
+          </div>
+        </div>
       </div>
     </Modal>
   </div>
@@ -19,18 +27,28 @@
 import Modal from "~/components/common/Modal.vue";
 import {Contract} from "ethers";
 
-const props = defineProps<{name: string}>();
-const tokenAddress = defineModel<string>('address', { required: true });
+const props = defineProps<{ name: string }>();
+const tokenAddress = defineModel<string>('address', {required: true});
 const amount = defineModel<number>('amount');
 
+const search = ref('');
 const showModal = ref(false);
 
-const closeModal = () => {
+const closeModal = (address?: string) => {
   showModal.value = false;
-  refreshToken();
+  if (address) {
+    tokenAddress.value = address;
+    refreshToken();
+  }
 }
 
-const { data: token, refresh: refreshToken } = useAsyncData('SwapForm - ' + props.name, async () => {
+const {data: queriedTokens} = useFetch('/api/token', {
+  query: {search},
+  server: false,
+  watch: [search]
+});
+
+const {data: token, refresh: refreshToken} = useAsyncData('SwapForm - ' + props.name, async () => {
   const provider = await useEthersProvider();
   const ierc20Metadata: [] = await $fetch('/abi/ierc20metadata.json');
 
@@ -69,4 +87,20 @@ const { data: token, refresh: refreshToken } = useAsyncData('SwapForm - ' + prop
 .modal-input-wrapper {
   width: 500px;
 }
+
+.search-results {
+  display: flex;
+  flex-direction: column;
+
+  .search-result {
+    padding: var(--small-spacing);
+
+    &:hover {
+      background-color: var(--background-hover);
+      cursor: pointer;
+    }
+  }
+}
+
+
 </style>

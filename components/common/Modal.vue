@@ -47,5 +47,9 @@ const emit = defineEmits(['close']);
     content: "\00d7";
     font-size: 1.5rem;
   }
+
+  &:hover {
+    cursor: pointer;
+  }
 }
 </style>
