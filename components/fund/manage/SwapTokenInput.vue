@@ -11,8 +11,8 @@
         </div>
         <div>
           <label>Search results:</label>
-          <div class="search-results">
-            <div v-if="queriedTokens" v-for="token in queriedTokens" :key="token.address" @click="closeModal(token.address)" class="search-result">
+          <div v-if="queriedTokens" class="search-results">
+            <div v-for="token in queriedTokens" :key="token.address" @click="closeModal(token.address)" class="search-result">
               <p>{{ token.name }} ({{ token.symbol }})</p>
               <span>{{ token.address }}</span>
             </div>

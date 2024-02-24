@@ -50,7 +50,7 @@
 </template>
 
 <script setup lang="ts">
-import {Contract} from "ethers";
+import {Contract, ContractTransactionResponse} from "ethers";
 import Modal from "~/components/common/Modal.vue";
 
 const emit = defineEmits(['close']);
@@ -79,15 +79,21 @@ const createFund = async () => {
 
   const parsedFundRaisingClose = new Date(formData.fundRaisingClose);
   const parsedFundClose = new Date(formData.fundClose);
-  const fundTransaction = await fundFactoryContract.getFunction('createFund').send(
-      formData.fee * 1e2,
-      formData.performanceFee * 1e2,
-      BigInt(Math.round(parsedFundRaisingClose.getTime() / 1000)),
-      BigInt(Math.round(parsedFundClose.getTime() / 1000)),
-  );
+  let fundTransaction: ContractTransactionResponse;
+  try {
+     fundTransaction = await fundFactoryContract.getFunction('createFund').send(
+        formData.fee * 1e2,
+        formData.performanceFee * 1e2,
+        BigInt(Math.round(parsedFundRaisingClose.getTime() / 1000)),
+        BigInt(Math.round(parsedFundClose.getTime() / 1000)),
+    );
+  } catch (e) {
+    console.error(e);
+    await useErrorHandler().showEthersErrorToast(e);
+    return;
+  }
 
   const receipt = await fundTransaction.wait();
-  console.log(receipt);
   if (!receipt || receipt.logs.length < 1)
     return;
 

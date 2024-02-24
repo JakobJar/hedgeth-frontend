@@ -116,7 +116,12 @@ const invest = async () => {
   const amount = BigInt(investForm.amount * 10 ** 18);
   const usdcTran = await usdcContract.getFunction('approve').send(props.address, amount);
   await usdcTran.wait();
-  await fundContract.getFunction('invest').send(amount);
+  try {
+    await fundContract.getFunction('invest').send(amount);
+  } catch (e) {
+    console.error(e);
+    await useErrorHandler().showEthersErrorToast(e);
+  }
 };
 
 const payout = async () => {
@@ -125,7 +130,12 @@ const payout = async () => {
   const fundABI: [] = await $fetch('/abi/ifund.json');
 
   const fundContract = new Contract(props.address, fundABI, signer);
-  await fundContract.getFunction('payout').send();
+  try {
+    await fundContract.getFunction('payout').send();
+  } catch (e) {
+    console.error(e);
+    await useErrorHandler().showEthersErrorToast(e);
+  }
 };
 </script>
 

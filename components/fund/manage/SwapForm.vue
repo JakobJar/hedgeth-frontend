@@ -91,7 +91,13 @@ const swap = async () => {
   const encodedPath = ethers.solidityPacked(encodeTypes, encodeValues);
 
   const fundContract = new Contract(props.address, fundABI, signer);
-  await fundContract.getFunction('swapAssets').send(encodedPath, amountIn, minAmountOut, swapForm.fromToken, swapForm.toToken);
+  try {
+    await fundContract.getFunction('swapAssets').send(encodedPath, amountIn, minAmountOut, swapForm.fromToken, swapForm.toToken);
+  } catch (e) {
+    console.error(e);
+    await useErrorHandler().showEthersErrorToast(e);
+    return;
+  }
 };
 </script>
 
